@@ -22,9 +22,9 @@ public class CommonController {
     }
 
     @RequestMapping(path = "/getStudentInfoByStudentID")
-    public ResponseEntity<StudentInfoDto> getStudentInfoByStudentID(@RequestParam String student_id) {
+    public ResponseEntity<StudentInfoDto> getStudentInfoByStudentID(@RequestParam String studentId) {
 
-        StudentInfoDto response = commonService.getStudentInfoByStudentId(student_id);
+        StudentInfoDto response = commonService.getStudentInfoByStudentId(studentId);
         return new ResponseEntity<StudentInfoDto>(response, HttpStatus.OK);
     }
 }

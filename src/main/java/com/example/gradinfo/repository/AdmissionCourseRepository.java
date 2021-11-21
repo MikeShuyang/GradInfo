@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface AdmissionCourseRepository extends JpaRepository<SysAdmissionCourseEntity,Long> {
-    List<SysAdmissionCourseEntity> getSysAdmissionCourseEntitiesByStudentPostId(String Student_post_id);
+    List<SysAdmissionCourseEntity> getSysAdmissionCourseEntitiesByStudentPostId(String studentPostId);
 }

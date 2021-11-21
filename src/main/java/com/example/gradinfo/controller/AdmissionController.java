@@ -1,10 +1,9 @@
 package com.example.gradinfo.controller;
 
-import com.example.gradinfo.dto.StudentInfoDto;
+import com.example.gradinfo.dto.AdmissionCourseDto;
+import com.example.gradinfo.dto.AdmissionCourseListDto;
 import com.example.gradinfo.dto.StudentPostDto;
-import com.example.gradinfo.entity.SysStudentPostEntity;
 import com.example.gradinfo.service.AdmissionService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,17 +20,18 @@ public class AdmissionController {
     }
 
     @GetMapping(path = "/getStudentPostDataByStudentIDAndPostNumber")
-    public ResponseEntity<StudentPostDto> getStudentPostDataByStudentIDAndPostNumber(@RequestParam String student_id, String sp_post_number) {
+    public ResponseEntity<StudentPostDto> getStudentPostDataByStudentIDAndPostNumber(@RequestParam String studentId, String spPostNumber) {
 
-        StudentPostDto response = admissionService.getStudentPostDataByStudentIDAndPostNumber(student_id, sp_post_number);
+        StudentPostDto response = admissionService.getStudentPostDataByStudentIDAndPostNumber(studentId, spPostNumber);
 
         return new ResponseEntity<StudentPostDto>(response, HttpStatus.OK);
     }
 
 
-//    @GetMapping(path = "getAdmissionCourseTableDataByIDAndPostNumber")
-//    public ResponseEntity<> getAdmissionCourseTableDataByIDAndPostNumber() {
-//
-//
-//    }
+    @GetMapping(path = "getAdmissionCourseTableDataByIDAndPostNumber")
+    public ResponseEntity<AdmissionCourseListDto> getAdmissionCourseTableDataByIDAndPostNumber(@RequestParam String studentId, String spPostNumber) {
+        AdmissionCourseListDto response = admissionService.getAdmissionCourseDataByStudentIDAndPostNumber(studentId, spPostNumber);
+
+        return new ResponseEntity<AdmissionCourseListDto>(response, HttpStatus.OK);
+    }
 }

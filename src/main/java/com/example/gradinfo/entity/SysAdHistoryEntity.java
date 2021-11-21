@@ -13,6 +13,7 @@ public class SysAdHistoryEntity {
     private Byte adHistoryCourseApplyStatus;
     private String adHistoryCourseTransdate;
 
+
     @Id
     @Column(name = "ad_history_id")
     public int getAdHistoryId() {
