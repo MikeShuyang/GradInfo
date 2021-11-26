@@ -1,17 +1,13 @@
 package com.example.gradinfo.service.impl;
 
-import com.example.gradinfo.dto.AdmissionCourseDto;
-import com.example.gradinfo.dto.AdmissionCourseHistoryDto;
-import com.example.gradinfo.dto.AdmissionCourseListDto;
-import com.example.gradinfo.dto.StudentPostDto;
-import com.example.gradinfo.entity.SysAdHistoryEntity;
-import com.example.gradinfo.entity.SysAdmissionCourseEntity;
-import com.example.gradinfo.entity.SysStudentEntity;
-import com.example.gradinfo.entity.SysStudentPostEntity;
+import com.example.gradinfo.bo.StudentGpaAndUnit;
+import com.example.gradinfo.dto.request.AdmissionCourseRequest;
+import com.example.gradinfo.dto.response.*;
+import com.example.gradinfo.entity.*;
 import com.example.gradinfo.repository.*;
 import com.example.gradinfo.service.AdmissionService;
 import com.example.gradinfo.service.CommonService;
-import com.example.gradinfo.tool.DtoTools;
+import com.example.gradinfo.mapper.CommonMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -38,42 +34,63 @@ public class AdmissionServiceImpl implements AdmissionService {
 
 
     @Override
-    public StudentPostDto getStudentPostDataByStudentIDAndPostNumber(String studentId, String spPostNumber) {
-        StudentPostDto studentPostDto = new StudentPostDto();
+    public StudentPostResponse getStudentPostDataByStudentIDAndPostNumber(String studentId, String spPostNumber) {
+        StudentPostResponse studentPostDto = new StudentPostResponse();
         SysStudentEntity sysStudentEntity = studentRepository.findSysStudentEntityBystudentId(studentId);
         SysStudentPostEntity sysStudentPostEntity = commonService.getStudentPostEntitiesByStudentIdAndSpPostNumber(studentId, spPostNumber);
 
-        return DtoTools.convertToDto(sysStudentPostEntity, StudentPostDto.class);
+        return CommonMapper.convertToDto(sysStudentPostEntity, StudentPostResponse.class);
     }
 
     @Override
-    public AdmissionCourseListDto getAdmissionCourseDataByStudentIDAndPostNumber(String studentId, String spPostNumber) {
+    public AdmissionCourseListResponse getAdmissionCourseDataByStudentIDAndPostNumber(String studentId, String spPostNumber) {
         String studentPostId = commonService.getStudentPostEntitiesByStudentIdAndSpPostNumber(studentId, spPostNumber).getStudentPostId();
-        AdmissionCourseListDto admissionCourseListDto = new AdmissionCourseListDto();
+        AdmissionCourseListResponse admissionCourseListResponse = new AdmissionCourseListResponse();
         List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList = admissionCourseRepository.getSysAdmissionCourseEntitiesByStudentPostId(studentPostId);
-        List<AdmissionCourseDto> admissionCourseDtoList = new ArrayList<>();
+        List<AdmissionCourseResponse> admissionCourseResponseList = new ArrayList<>();
 
         for (SysAdmissionCourseEntity sysAdmissionCourseEntity : sysAdmissionCourseEntityList) {
-            AdmissionCourseDto admissionCourseDto;
-            admissionCourseDto = DtoTools.convertToDto(sysAdmissionCourseEntity, AdmissionCourseDto.class);
-            List<SysAdHistoryEntity> sysAdHistoryEntityList = admissionHistoryRepository.getSysAdHistoryEntitiesByAdCourseId(admissionCourseDto.getAdCourseId());
+            AdmissionCourseResponse admissionCourseResponse;
+            admissionCourseResponse = CommonMapper.convertToDto(sysAdmissionCourseEntity, AdmissionCourseResponse.class);
+            List<SysAdHistoryEntity> sysAdHistoryEntityList = admissionHistoryRepository.getSysAdHistoryEntitiesByAdCourseId(admissionCourseResponse.getAdCourseId());
             System.out.println(sysAdHistoryEntityList.size());
 
-            List<AdmissionCourseHistoryDto> admissionCourseHistoryDtoList = new ArrayList<>();
+            List<AdmissionCourseHistory> admissionCourseHistoryList = new ArrayList<>();
             if (sysAdHistoryEntityList != null && sysAdHistoryEntityList.size() != 0) {
                 for (SysAdHistoryEntity sysAdHistoryEntity : sysAdHistoryEntityList) {
-                    admissionCourseHistoryDtoList.add(DtoTools.convertToDto(sysAdHistoryEntity, AdmissionCourseHistoryDto.class));
+                    admissionCourseHistoryList.add(CommonMapper.convertToDto(sysAdHistoryEntity, AdmissionCourseHistory.class));
                 }
             }
-            admissionCourseDto.setAdCourseHistory(admissionCourseHistoryDtoList);
+            admissionCourseResponse.setAdCourseHistory(admissionCourseHistoryList);
 
-            admissionCourseDtoList.add(admissionCourseDto);
+            admissionCourseResponseList.add(admissionCourseResponse);
         }
 
-        admissionCourseListDto.setAdmissionCourseList(admissionCourseDtoList);
-        return admissionCourseListDto;
+        admissionCourseListResponse.setAdmissionCourseList(admissionCourseResponseList);
+        return admissionCourseListResponse;
     }
 
+    @Override
+    public AdmissionCourseApplyResponse getPostAdmissionCourseTableDataByNewArr(AdmissionCourseRequest admissionCourseRequest) {
+        String studentId = admissionCourseRequest.getStudentInfo().getStudentId();
+        String spPostNumber = admissionCourseRequest.getStudentInfo().getSpPostNumber();
+        SysStudentPostEntity sysStudentPostEntity = commonService.getStudentPostEntitiesByStudentIdAndSpPostNumber(studentId, spPostNumber);
+        String studentPostId = sysStudentPostEntity.getStudentPostId();
+        List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList = admissionCourseRepository.getSysAdmissionCourseEntitiesByStudentPostId(studentPostId);
+        List<SysTransferCourseEntity> sysTransferCourseEntityList = transferCourseRepository.getSysTransferCourseEntitiesByStudentPostId(studentPostId);
 
+        return null;
+    }
 
+    private String CheckAdmissionCourseAndReturnReason(AdmissionCourseRequest admissionCourseRequest, List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList, SysStudentPostEntity sysStudentPostEntity) {
+        // according to the fifth key point of API document, write this function
+
+        return "";
+    }
+
+    private StudentGpaAndUnit CalculateGpaAndUnit(AdmissionCourseRequest admissionCourseRequest, List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList, SysStudentPostEntity sysStudentPostEntity) {
+        // according to the second key point of API document, write this function
+        StudentGpaAndUnit studentGpaAndUnit = new StudentGpaAndUnit();
+        return studentGpaAndUnit;
+    }
 }

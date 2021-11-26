@@ -4,14 +4,14 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "sys_user", schema = "GradInfoV3", catalog = "")
+@Table(name = "sys_user", schema = "GradInfoV3Cp", catalog = "")
 public class SysUserEntity {
     private String userId;
     private String userCode;
     private String userName;
     private String userPassword;
     private String userOper;
-    private String userAvaliable;
+    private String userLocked;
 
     @Id
     @Column(name = "user_id")
@@ -64,13 +64,13 @@ public class SysUserEntity {
     }
 
     @Basic
-    @Column(name = "user_avaliable")
-    public String getUserAvaliable() {
-        return userAvaliable;
+    @Column(name = "user_locked")
+    public String getUserLocked() {
+        return userLocked;
     }
 
-    public void setUserAvaliable(String userAvaliable) {
-        this.userAvaliable = userAvaliable;
+    public void setUserLocked(String userLocked) {
+        this.userLocked = userLocked;
     }
 
     @Override
@@ -78,11 +78,11 @@ public class SysUserEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SysUserEntity that = (SysUserEntity) o;
-        return Objects.equals(userId, that.userId) && Objects.equals(userCode, that.userCode) && Objects.equals(userName, that.userName) && Objects.equals(userPassword, that.userPassword) && Objects.equals(userOper, that.userOper) && Objects.equals(userAvaliable, that.userAvaliable);
+        return Objects.equals(userId, that.userId) && Objects.equals(userCode, that.userCode) && Objects.equals(userName, that.userName) && Objects.equals(userPassword, that.userPassword) && Objects.equals(userOper, that.userOper) && Objects.equals(userLocked, that.userLocked);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, userCode, userName, userPassword, userOper, userAvaliable);
+        return Objects.hash(userId, userCode, userName, userPassword, userOper, userLocked);
     }
 }

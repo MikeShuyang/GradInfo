@@ -1,11 +1,9 @@
-package com.example.gradinfo.dto;
+package com.example.gradinfo.dto.response;
 
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
-public class StudentPostDto {
+public class StudentPostResponse {
     private String spObj;
     private String spMajor;
     private String spNdocs;

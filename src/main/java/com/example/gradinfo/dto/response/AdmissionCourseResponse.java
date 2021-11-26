@@ -1,11 +1,11 @@
-package com.example.gradinfo.dto;
+package com.example.gradinfo.dto.response;
 
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class AdmissionCourseDto {
+public class AdmissionCourseResponse {
         private String adCourseId;
         private String adCourseName;
         private String adCourseTerm;
@@ -15,7 +15,7 @@ public class AdmissionCourseDto {
         private String adCourseApplyCode;
         private String adCourseOper;
         private String adCourseTransdate;
-        List<AdmissionCourseHistoryDto> adCourseHistory;
-        private String adCourseApplyStatus;
+        List<AdmissionCourseHistory> adCourseHistory;
+        private boolean adCourseApplyStatus;
 }
 

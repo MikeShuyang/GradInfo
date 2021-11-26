@@ -1,10 +1,9 @@
-package com.example.gradinfo.tool;
+package com.example.gradinfo.mapper;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 
-public class DtoTools {
+public class CommonMapper {
     public static <T,K> T convertToDto(K entity, Class<T> object) {
         ModelMapper modelMapper = new ModelMapper();
 

@@ -1,7 +1,7 @@
 package com.example.gradinfo.controller;
 
 
-import com.example.gradinfo.dto.StudentInfoDto;
+import com.example.gradinfo.dto.response.StudentInfoResponse;
 import com.example.gradinfo.service.CommonService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +22,9 @@ public class CommonController {
     }
 
     @RequestMapping(path = "/getStudentInfoByStudentID")
-    public ResponseEntity<StudentInfoDto> getStudentInfoByStudentID(@RequestParam String studentId) {
+    public ResponseEntity<StudentInfoResponse> getStudentInfoByStudentID(@RequestParam String studentId) {
 
-        StudentInfoDto response = commonService.getStudentInfoByStudentId(studentId);
-        return new ResponseEntity<StudentInfoDto>(response, HttpStatus.OK);
+        StudentInfoResponse response = commonService.getStudentInfoByStudentId(studentId);
+        return new ResponseEntity<StudentInfoResponse>(response, HttpStatus.OK);
     }
 }

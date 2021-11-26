@@ -1,6 +1,6 @@
 package com.example.gradinfo.service.impl;
 
-import com.example.gradinfo.dto.StudentInfoDto;
+import com.example.gradinfo.dto.response.StudentInfoResponse;
 import com.example.gradinfo.entity.SysStudentEntity;
 import com.example.gradinfo.entity.SysStudentPostEntity;
 import com.example.gradinfo.repository.StudentPostRepository;
@@ -26,8 +26,8 @@ public class CommonServiceImpl implements CommonService {
     }
 
     @Override
-    public StudentInfoDto getStudentInfoByStudentId(String studentId) {
-        StudentInfoDto studentInfoDto = new StudentInfoDto();
+    public StudentInfoResponse getStudentInfoByStudentId(String studentId) {
+        StudentInfoResponse studentInfoDto = new StudentInfoResponse();
         List<String> postNumber = new ArrayList<>();
 
         SysStudentEntity sysStudentEntity = studentRepository.findSysStudentEntityBystudentId(studentId);
@@ -35,7 +35,7 @@ public class CommonServiceImpl implements CommonService {
             return studentInfoDto;
         }
         ModelMapper modelMapper = new ModelMapper();
-        studentInfoDto = modelMapper.map(sysStudentEntity, StudentInfoDto.class);
+        studentInfoDto = modelMapper.map(sysStudentEntity, StudentInfoResponse.class);
 
         List<SysStudentPostEntity> sysStudentPostEntities = studentPostRepository.getSysStudentPostEntitiesByStudentId(studentId);
 
@@ -61,4 +61,5 @@ public class CommonServiceImpl implements CommonService {
 
         return sysStudentPostEntity;
     }
+
 }
