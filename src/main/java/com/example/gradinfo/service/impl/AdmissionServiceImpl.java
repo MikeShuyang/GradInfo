@@ -83,14 +83,62 @@ public class AdmissionServiceImpl implements AdmissionService {
     }
 
     private String CheckAdmissionCourseAndReturnReason(AdmissionCourseRequest admissionCourseRequest, List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList, SysStudentPostEntity sysStudentPostEntity) {
-        // according to the fifth key point of API document, write this function
-
+        // according to the fifth key point of API document, write this function;
+        int visitCourseScore = 0;
+        for (SysAdmissionCourseEntity sysAdmissionCourseEntity: sysAdmissionCourseEntityList) {
+            if(sysAdmissionCourseEntity.getAdCourseApplyStatus() == 1) {
+                if(sysAdmissionCourseEntity.getAdCourseApplyCode().equals("X")){
+                    String RestrictedCourseName = sysAdmissionCourseEntity.getAdCourseName();
+                    return String.format("Restricted course %s cannot be applied",RestrictedCourseName);
+                }
+                if(sysAdmissionCourseEntity.getAdCourseApplyCode().equals("V")) {
+                    visitCourseScore += sysAdmissionCourseEntity.getAdCourseUnits();
+                }
+            }
+            if(visitCourseScore > 12){
+                return "Visitor course pass visit limit";
+            }
+        }
+        for (SysTransferCourseEntity sysTransferCourseEntity:sysTransferCourseEntityList) {
+            if (sysTransferCourseEntity.getTrCourseApplyStatus() == 1) {
+                if (sysTransferCourseEntity.getTrCourseApplyCode().equals("X")) {
+                    return String.format("Restricted course %s cannot be applied", sysTransferCourseEntity.getTrCourseName());
+                }
+            }
+        }
         return "";
     }
 
     private StudentGpaAndUnit CalculateGpaAndUnit(AdmissionCourseRequest admissionCourseRequest, List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList, SysStudentPostEntity sysStudentPostEntity) {
         // according to the second key point of API document, write this function
         StudentGpaAndUnit studentGpaAndUnit = new StudentGpaAndUnit();
+        Double AppliedGPTs = 0.0 ,TotalGPTs = 0.0, AppliedUnits = 0.0, TotalUnits = 0.0, RGUnits = 0.0;
+        for (SysAdmissionCourseEntity sysAdmissionCourseEntity: sysAdmissionCourseEntityList) {
+            if(sysAdmissionCourseEntity.getAdCourseGrade().equals("RG")){
+                if(sysAdmissionCourseEntity.getAdCourseApplyStatus() == 1){
+                    RGUnits += sysAdmissionCourseEntity.getAdCourseUnits();
+                }
+                continue;
+            }
+            TotalGPTs += sysAdmissionCourseEntity.getAdCourseGpts();
+            TotalUnits += sysAdmissionCourseEntity.getAdCourseUnits();
+            if(sysAdmissionCourseEntity.getAdCourseApplyStatus() == 1){
+                AppliedGPTs += sysAdmissionCourseEntity.getAdCourseGpts();
+                AppliedUnits += sysAdmissionCourseEntity.getAdCourseUnits();
+            }
+        }
+        for (SysTransferCourseEntity sysTransferCourseEntity:sysTransferCourseEntityList){
+            if(sysTransferCourseEntity.getTrCourseApplyStatus() == 1){
+                AppliedGPTs += sysTransferCourseEntity.getTrCourseGpts();
+                AppliedUnits += sysTransferCourseEntity.getTrCourseUnits();
+            }
+        }
+        double SpGpaAll = (double) (Math.round( (TotalGPTs/TotalUnits) *100) / 100);
+        double SpGpaApply = (double) (Math.round((AppliedGPTs/AppliedUnits)*100) / 100);
+        studentGpaAndUnit.setSpGpaAll(SpGpaAll);
+        studentGpaAndUnit.setSpGpaApply(SpGpaApply);
+        studentGpaAndUnit.setSpRgunits(RGUnits);
+        studentGpaAndUnit.setSpEarnunits(AppliedUnits);
         return studentGpaAndUnit;
     }
 }
