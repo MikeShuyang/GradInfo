@@ -15,7 +15,9 @@ import com.example.gradinfo.service.TransferService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class TransferServiceImpl implements TransferService {
@@ -66,13 +68,17 @@ public class TransferServiceImpl implements TransferService {
         String studentPostId = commonService.getStudentPostEntitiesByStudentIdAndSpPostNumber(studentId, spPostNumber).getStudentPostId();
         List<TransferInstitution> transferInstitutionList = new ArrayList<>();
         List<String> institutionIdList = new ArrayList<>();
+        Set<String> set = new HashSet<>();
 
         for (SysTransferCourseEntity sysTransferCourseEntity: transferCourseRepository.getSysTransferCourseEntitiesByStudentPostId(studentPostId)) {
             institutionIdList.add(sysTransferCourseEntity.getInstitutionId());
         }
         for (int index = 0; index < institutionIdList.size(); index++) {
-            TransferInstitution transferInstitution = CommonMapper.convertToDto(institutionRepository.getSysInstitutionEntitiesByInstitutionId(institutionIdList.get(index)), TransferInstitution.class);
-            transferInstitutionList.add(transferInstitution);
+
+            if (set.add(institutionIdList.get(index))) {
+                TransferInstitution transferInstitution = CommonMapper.convertToDto(institutionRepository.getSysInstitutionEntitiesByInstitutionId(institutionIdList.get(index)), TransferInstitution.class);
+                transferInstitutionList.add(transferInstitution);
+            }
         }
         return transferInstitutionList;
     }
