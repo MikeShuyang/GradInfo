@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping(path = "transfer")
 @CrossOrigin(origins = "*")
 public class TransferController {
-    private TransferService transferService;
+    private final TransferService transferService;
 
     public TransferController(TransferService transferService) {
         this.transferService = transferService;
@@ -27,9 +27,9 @@ public class TransferController {
     }
 
     @GetMapping(path = "/getTransferProgramOfStudyByIDAndPostNumber")
-    public ResponseEntity<TransferInstitutionListResponse> getTransferProgramOfStudyByIDAndPostNumber(@RequestParam String studentId, String spPostNumber) {
-        TransferInstitutionListResponse response = transferService.getTransferInfoByIDAndPostNumber(studentId, spPostNumber);
-        return new ResponseEntity<TransferInstitutionListResponse>(response, HttpStatus.OK);
+    public ResponseEntity<List<TransferInstitution>> getTransferProgramOfStudyByIDAndPostNumber(@RequestParam String studentId, String spPostNumber) {
+        List<TransferInstitution> response = transferService.getTransferInfoByIDAndPostNumber(studentId, spPostNumber);
+        return new ResponseEntity<List<TransferInstitution>>(response, HttpStatus.OK);
     }
 
     @GetMapping(path = "/getBachelorDegreeInfoByID")

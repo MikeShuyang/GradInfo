@@ -20,7 +20,13 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public LoginResponse getUserInfoByUsernameAndPassword(String userName, String userPassword) {
         SysUserEntity sysUserEntity = userInfoRepository.getSysUserEntityByUserNameAndUserPassword(userName, userPassword);
-        LoginResponse loginResponse = CommonMapper.convertToDto(sysUserEntity, LoginResponse.class);
+        LoginResponse loginResponse = new LoginResponse();
+        if (sysUserEntity.getUserPassword().equals("")) {
+
+        } else {
+            loginResponse = CommonMapper.convertToDto(sysUserEntity, LoginResponse.class);
+        }
+
 
         return loginResponse;
     }

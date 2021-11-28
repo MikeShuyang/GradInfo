@@ -10,7 +10,7 @@ import java.util.List;
 public interface TransferService {
 
     List<TransferCourseResponse> getTransferCourseTableDataByIDAndPostNumber(String studentId, String spPostNumber);
-    TransferInstitutionListResponse getTransferInfoByIDAndPostNumber(String studentId, String spPostNumber);
+    List<TransferInstitution> getTransferInfoByIDAndPostNumber(String studentId, String spPostNumber);
     BachelorDegreeResponse getBachelorDegreeInfoByID(String studentId);
     TransferCourseApplyResponse postTransferCourseTableDataByNewArr(TransferCourseRequest transferCourseRequest);
 }

@@ -62,10 +62,9 @@ public class TransferServiceImpl implements TransferService {
     }
 
     @Override
-    public TransferInstitutionListResponse getTransferInfoByIDAndPostNumber(String studentId, String spPostNumber) {
+    public List<TransferInstitution> getTransferInfoByIDAndPostNumber(String studentId, String spPostNumber) {
         String studentPostId = commonService.getStudentPostEntitiesByStudentIdAndSpPostNumber(studentId, spPostNumber).getStudentPostId();
         List<TransferInstitution> transferInstitutionList = new ArrayList<>();
-        TransferInstitutionListResponse transferInstitutionListResponse = new TransferInstitutionListResponse();
         List<String> institutionIdList = new ArrayList<>();
 
         for (SysTransferCourseEntity sysTransferCourseEntity: transferCourseRepository.getSysTransferCourseEntitiesByStudentPostId(studentPostId)) {
@@ -75,9 +74,7 @@ public class TransferServiceImpl implements TransferService {
             TransferInstitution transferInstitution = CommonMapper.convertToDto(institutionRepository.getSysInstitutionEntitiesByInstitutionId(institutionIdList.get(index)), TransferInstitution.class);
             transferInstitutionList.add(transferInstitution);
         }
-
-        transferInstitutionListResponse.setTransferInstitutionList(transferInstitutionList);
-        return transferInstitutionListResponse;
+        return transferInstitutionList;
     }
 
     @Override
