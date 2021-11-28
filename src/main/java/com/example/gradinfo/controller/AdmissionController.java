@@ -37,7 +37,7 @@ public class AdmissionController {
 
     @PostMapping(path = "postAdmissionCourseTableDataByNewArr")
     public ResponseEntity<AdmissionCourseApplyResponse> postAdmissionCourseTableDataByNewArr(@RequestBody AdmissionCourseRequest admissionCourseRequest) {
-        AdmissionCourseApplyResponse response = new AdmissionCourseApplyResponse();
+        AdmissionCourseApplyResponse response = admissionService.getPostAdmissionCourseTableDataByNewArr(admissionCourseRequest);
         
         return new ResponseEntity<AdmissionCourseApplyResponse>(response, HttpStatus.OK);
     }

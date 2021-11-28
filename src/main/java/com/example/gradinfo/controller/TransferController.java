@@ -1,8 +1,8 @@
 package com.example.gradinfo.controller;
 
-import com.example.gradinfo.dto.response.BachelorDegreeResponse;
-import com.example.gradinfo.dto.response.TransferCourseListResponse;
-import com.example.gradinfo.dto.response.TransferInstitutionListResponse;
+import com.example.gradinfo.dto.request.AdmissionCourseRequest;
+import com.example.gradinfo.dto.request.TransferCourseRequest;
+import com.example.gradinfo.dto.response.*;
 import com.example.gradinfo.service.TransferService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +24,8 @@ public class TransferController {
         return new ResponseEntity<TransferCourseListResponse>(response, HttpStatus.OK);
     }
 
-    @GetMapping(path = "/getTransferInfoByIDAndPostNumber")
-    public ResponseEntity<TransferInstitutionListResponse> getTransferInfoByIDAndPostNumber(@RequestParam String studentId, String spPostNumber) {
+    @GetMapping(path = "/getTransferProgramOfStudyByIDAndPostNumber")
+    public ResponseEntity<TransferInstitutionListResponse> getTransferProgramOfStudyByIDAndPostNumber(@RequestParam String studentId, String spPostNumber) {
         TransferInstitutionListResponse response = transferService.getTransferInfoByIDAndPostNumber(studentId, spPostNumber);
         return new ResponseEntity<TransferInstitutionListResponse>(response, HttpStatus.OK);
     }
@@ -34,6 +34,13 @@ public class TransferController {
     public ResponseEntity<BachelorDegreeResponse> getBachelorDegreeInfoByID(@RequestParam String studentId) {
         BachelorDegreeResponse response = transferService.getBachelorDegreeInfoByID(studentId);
         return new ResponseEntity<BachelorDegreeResponse>(response, HttpStatus.OK);
+    }
+
+    @PostMapping(path = "postTransferCourseTableDataByNewArr")
+    public ResponseEntity<TransferCourseApplyResponse> postAdmissionCourseTableDataByNewArr(@RequestBody TransferCourseRequest transferCourseRequest) {
+        TransferCourseApplyResponse response = transferService.postTransferCourseTableDataByNewArr(transferCourseRequest);
+
+        return new ResponseEntity<TransferCourseApplyResponse>(response, HttpStatus.OK);
     }
 
 }

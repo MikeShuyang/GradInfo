@@ -1,13 +1,15 @@
 package com.example.gradinfo.service.impl;
 
+import com.example.gradinfo.bo.StudentGpaAndUnit;
+import com.example.gradinfo.dto.request.AdmissionCourseRequest;
+import com.example.gradinfo.dto.request.TransferCourseRequest;
 import com.example.gradinfo.dto.response.*;
+import com.example.gradinfo.entity.SysAdmissionCourseEntity;
+import com.example.gradinfo.entity.SysStudentPostEntity;
 import com.example.gradinfo.entity.SysTransferCourseEntity;
 import com.example.gradinfo.entity.SysTransferHistoryEntity;
 import com.example.gradinfo.mapper.CommonMapper;
-import com.example.gradinfo.repository.BachelorDegreeRepository;
-import com.example.gradinfo.repository.InstitutionRepository;
-import com.example.gradinfo.repository.TransferCourseRepository;
-import com.example.gradinfo.repository.TransferHistoryRepository;
+import com.example.gradinfo.repository.*;
 import com.example.gradinfo.service.CommonService;
 import com.example.gradinfo.service.TransferService;
 import org.springframework.stereotype.Service;
@@ -22,13 +24,15 @@ public class TransferServiceImpl implements TransferService {
     private final TransferHistoryRepository transferHistoryRepository;
     private final InstitutionRepository institutionRepository;
     private final BachelorDegreeRepository bachelorDegreeRepository;
+    private final AdmissionCourseRepository admissionCourseRepository;
 
-    public TransferServiceImpl(CommonService commonService, TransferCourseRepository transferCourseRepository, TransferHistoryRepository transferHistoryRepository, InstitutionRepository institutionRepository, BachelorDegreeRepository bachelorDegreeRepository) {
+    public TransferServiceImpl(CommonService commonService, TransferCourseRepository transferCourseRepository, TransferHistoryRepository transferHistoryRepository, InstitutionRepository institutionRepository, BachelorDegreeRepository bachelorDegreeRepository, AdmissionCourseRepository admissionCourseRepository) {
         this.commonService = commonService;
         this.transferCourseRepository = transferCourseRepository;
         this.transferHistoryRepository = transferHistoryRepository;
         this.institutionRepository = institutionRepository;
         this.bachelorDegreeRepository = bachelorDegreeRepository;
+        this.admissionCourseRepository = admissionCourseRepository;
     }
 
 
@@ -73,6 +77,7 @@ public class TransferServiceImpl implements TransferService {
             TransferInstitution transferInstitution = CommonMapper.convertToDto(institutionRepository.getSysInstitutionEntitiesByInstitutionId(institutionIdList.get(index)), TransferInstitution.class);
             transferInstitutionList.add(transferInstitution);
         }
+
         transferInstitutionListResponse.setTransferInstitutionList(transferInstitutionList);
         return transferInstitutionListResponse;
     }
@@ -81,5 +86,23 @@ public class TransferServiceImpl implements TransferService {
     public BachelorDegreeResponse getBachelorDegreeInfoByID(String studentId) {
         BachelorDegreeResponse bachelorDegreeResponse = CommonMapper.convertToDto(bachelorDegreeRepository.getSysStudentBachelorEntityByStudentId(studentId), BachelorDegreeResponse.class);
         return bachelorDegreeResponse;
+    }
+
+    @Override
+    public TransferCourseApplyResponse postTransferCourseTableDataByNewArr(TransferCourseRequest transferCourseRequest) {
+        TransferCourseApplyResponse transferCourseApplyResponse = new TransferCourseApplyResponse();
+        String studentId = transferCourseRequest.getStudentInfo().getStudentId();
+        String spPostNumber = transferCourseRequest.getStudentInfo().getSpPostNumber();
+        SysStudentPostEntity sysStudentPostEntity = commonService.getStudentPostEntitiesByStudentIdAndSpPostNumber(studentId, spPostNumber);
+        String studentPostId = sysStudentPostEntity.getStudentPostId();
+        List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList = admissionCourseRepository.getSysAdmissionCourseEntitiesByStudentPostId(studentPostId);
+        List<SysTransferCourseEntity> sysTransferCourseEntityList = transferCourseRepository.getSysTransferCourseEntitiesByStudentPostId(studentPostId);
+        return null;
+    }
+
+    private List<String> CheckAdmissionCourseAndReturnReason(AdmissionCourseRequest admissionCourseRequest, List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList, SysStudentPostEntity sysStudentPostEntity) {
+        // according to the 6 key point of API document, write this function
+        List<String> list = new ArrayList<>();
+        return list;
     }
 }

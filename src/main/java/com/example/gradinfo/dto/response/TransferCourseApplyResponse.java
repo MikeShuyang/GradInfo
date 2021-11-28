@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class AdmissionCourseApplyResponse {
+public class TransferCourseApplyResponse {
     private boolean flag;
     private List<String> reasonList;
 }

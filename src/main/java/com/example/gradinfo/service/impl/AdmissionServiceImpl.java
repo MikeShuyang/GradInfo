@@ -8,6 +8,8 @@ import com.example.gradinfo.repository.*;
 import com.example.gradinfo.service.AdmissionService;
 import com.example.gradinfo.service.CommonService;
 import com.example.gradinfo.mapper.CommonMapper;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -72,25 +74,56 @@ public class AdmissionServiceImpl implements AdmissionService {
 
     @Override
     public AdmissionCourseApplyResponse getPostAdmissionCourseTableDataByNewArr(AdmissionCourseRequest admissionCourseRequest) {
+        AdmissionCourseApplyResponse admissionCourseApplyResponse = new AdmissionCourseApplyResponse();
         String studentId = admissionCourseRequest.getStudentInfo().getStudentId();
         String spPostNumber = admissionCourseRequest.getStudentInfo().getSpPostNumber();
         SysStudentPostEntity sysStudentPostEntity = commonService.getStudentPostEntitiesByStudentIdAndSpPostNumber(studentId, spPostNumber);
         String studentPostId = sysStudentPostEntity.getStudentPostId();
         List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList = admissionCourseRepository.getSysAdmissionCourseEntitiesByStudentPostId(studentPostId);
         List<SysTransferCourseEntity> sysTransferCourseEntityList = transferCourseRepository.getSysTransferCourseEntitiesByStudentPostId(studentPostId);
+        List<String> reason = CheckAdmissionCourseAndReturnReason(admissionCourseRequest, sysAdmissionCourseEntityList, sysTransferCourseEntityList, sysStudentPostEntity);
+        admissionCourseApplyResponse.setReasonList(reason);
+        StudentGpaAndUnit studentGpaAndUnit = commonService.CalculateGpaAndUnit(admissionCourseRequest, sysAdmissionCourseEntityList, sysTransferCourseEntityList, sysStudentPostEntity);
+        admissionCourseApplyResponse.setFlag(true);
 
-        return null;
+        sysStudentPostEntity.setSpEarnunits(studentGpaAndUnit.getSpEarnunits());
+        sysStudentPostEntity.setSpRgunits(studentGpaAndUnit.getSpRgunits());
+        sysStudentPostEntity.setSpGpaApply(studentGpaAndUnit.getSpGpaApply());
+        sysStudentPostEntity.setSpGpaAll(studentGpaAndUnit.getSpGpaAll());
+        studentPostRepository.save(sysStudentPostEntity);
+        if (reason.equals("")) {
+            admissionCourseApplyResponse.setFlag(false);
+        }
+
+        return admissionCourseApplyResponse;
     }
 
-    private String CheckAdmissionCourseAndReturnReason(AdmissionCourseRequest admissionCourseRequest, List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList, SysStudentPostEntity sysStudentPostEntity) {
+    private List<String> CheckAdmissionCourseAndReturnReason(AdmissionCourseRequest admissionCourseRequest, List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList, SysStudentPostEntity sysStudentPostEntity) {
         // according to the fifth key point of API document, write this function
-
-        return "";
+        List<String> reason = new ArrayList<>();
+        int visitCourseScore = 0;
+        for (SysAdmissionCourseEntity sysAdmissionCourseEntity: sysAdmissionCourseEntityList) {
+            if(sysAdmissionCourseEntity.getAdCourseApplyStatus() == 1) {
+                if(sysAdmissionCourseEntity.getAdCourseApplyCode().equals("X")){
+                    String RestrictedCourseName = sysAdmissionCourseEntity.getAdCourseName();
+                    reason.add(String.format("Restricted course %s cannot be applied",RestrictedCourseName));
+                }
+                if(sysAdmissionCourseEntity.getAdCourseApplyCode().equals("V")) {
+                    visitCourseScore += sysAdmissionCourseEntity.getAdCourseUnits();
+                }
+            }
+            if(visitCourseScore > 12){
+                reason.add("Visitor course pass visit limit");
+            }
+        }
+        for (SysTransferCourseEntity sysTransferCourseEntity:sysTransferCourseEntityList) {
+            if (sysTransferCourseEntity.getTrCourseApplyStatus() == 1) {
+                if (sysTransferCourseEntity.getTrCourseApplyCode().equals("X")) {
+                    reason.add(String.format("Restricted course %s cannot be applied", sysTransferCourseEntity.getTrCourseName()));
+                }
+            }
+        }
+        return reason;
     }
 
-    private StudentGpaAndUnit CalculateGpaAndUnit(AdmissionCourseRequest admissionCourseRequest, List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList, SysStudentPostEntity sysStudentPostEntity) {
-        // according to the second key point of API document, write this function
-        StudentGpaAndUnit studentGpaAndUnit = new StudentGpaAndUnit();
-        return studentGpaAndUnit;
-    }
 }
