@@ -45,9 +45,8 @@ public class AdmissionServiceImpl implements AdmissionService {
     }
 
     @Override
-    public AdmissionCourseListResponse getAdmissionCourseDataByStudentIDAndPostNumber(String studentId, String spPostNumber) {
+    public List<AdmissionCourseResponse> getAdmissionCourseDataByStudentIDAndPostNumber(String studentId, String spPostNumber) {
         String studentPostId = commonService.getStudentPostEntitiesByStudentIdAndSpPostNumber(studentId, spPostNumber).getStudentPostId();
-        AdmissionCourseListResponse admissionCourseListResponse = new AdmissionCourseListResponse();
         List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList = admissionCourseRepository.getSysAdmissionCourseEntitiesByStudentPostId(studentPostId);
         List<AdmissionCourseResponse> admissionCourseResponseList = new ArrayList<>();
 
@@ -55,7 +54,6 @@ public class AdmissionServiceImpl implements AdmissionService {
             AdmissionCourseResponse admissionCourseResponse;
             admissionCourseResponse = CommonMapper.convertToDto(sysAdmissionCourseEntity, AdmissionCourseResponse.class);
             List<SysAdHistoryEntity> sysAdHistoryEntityList = admissionHistoryRepository.getSysAdHistoryEntitiesByAdCourseId(admissionCourseResponse.getAdCourseId());
-            System.out.println(sysAdHistoryEntityList.size());
 
             List<AdmissionCourseHistory> admissionCourseHistoryList = new ArrayList<>();
             if (sysAdHistoryEntityList != null && sysAdHistoryEntityList.size() != 0) {
@@ -68,8 +66,8 @@ public class AdmissionServiceImpl implements AdmissionService {
             admissionCourseResponseList.add(admissionCourseResponse);
         }
 
-        admissionCourseListResponse.setAdmissionCourseList(admissionCourseResponseList);
-        return admissionCourseListResponse;
+
+        return admissionCourseResponseList;
     }
 
     @Override

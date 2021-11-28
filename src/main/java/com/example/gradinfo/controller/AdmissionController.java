@@ -2,12 +2,14 @@ package com.example.gradinfo.controller;
 
 import com.example.gradinfo.dto.request.AdmissionCourseRequest;
 import com.example.gradinfo.dto.response.AdmissionCourseApplyResponse;
-import com.example.gradinfo.dto.response.AdmissionCourseListResponse;
+import com.example.gradinfo.dto.response.AdmissionCourseResponse;
 import com.example.gradinfo.dto.response.StudentPostResponse;
 import com.example.gradinfo.service.AdmissionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "admission")
@@ -29,10 +31,10 @@ public class AdmissionController {
     }
 
     @GetMapping(path = "getAdmissionCourseTableDataByIDAndPostNumber")
-    public ResponseEntity<AdmissionCourseListResponse> getAdmissionCourseTableDataByIDAndPostNumber(@RequestParam String studentId, String spPostNumber) {
-        AdmissionCourseListResponse response = admissionService.getAdmissionCourseDataByStudentIDAndPostNumber(studentId, spPostNumber);
+    public ResponseEntity<List<AdmissionCourseResponse>> getAdmissionCourseTableDataByIDAndPostNumber(@RequestParam String studentId, String spPostNumber) {
+        List<AdmissionCourseResponse> response = admissionService.getAdmissionCourseDataByStudentIDAndPostNumber(studentId, spPostNumber);
 
-        return new ResponseEntity<AdmissionCourseListResponse>(response, HttpStatus.OK);
+        return new ResponseEntity<List<AdmissionCourseResponse>>(response, HttpStatus.OK);
     }
 
     @PostMapping(path = "postAdmissionCourseTableDataByNewArr")

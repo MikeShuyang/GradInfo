@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "transfer")
 @CrossOrigin(origins = "*")
@@ -19,9 +21,9 @@ public class TransferController {
     }
 
     @GetMapping(path = "/getTransferCourseTableDataByIDAndPostNumber")
-    public ResponseEntity<TransferCourseListResponse> getTransferCourseTableDataByIDAndPostNumber(@RequestParam String studentId, String spPostNumber) {
-        TransferCourseListResponse response = transferService.getTransferCourseTableDataByIDAndPostNumber(studentId, spPostNumber);
-        return new ResponseEntity<TransferCourseListResponse>(response, HttpStatus.OK);
+    public ResponseEntity<List<TransferCourseResponse>> getTransferCourseTableDataByIDAndPostNumber(@RequestParam String studentId, String spPostNumber) {
+        List<TransferCourseResponse> response = transferService.getTransferCourseTableDataByIDAndPostNumber(studentId, spPostNumber);
+        return new ResponseEntity<List<TransferCourseResponse>>(response, HttpStatus.OK);
     }
 
     @GetMapping(path = "/getTransferProgramOfStudyByIDAndPostNumber")

@@ -37,9 +37,8 @@ public class TransferServiceImpl implements TransferService {
 
 
     @Override
-    public TransferCourseListResponse getTransferCourseTableDataByIDAndPostNumber(String studentId, String spPostNumber) {
+    public List<TransferCourseResponse> getTransferCourseTableDataByIDAndPostNumber(String studentId, String spPostNumber) {
         String studentPostId = commonService.getStudentPostEntitiesByStudentIdAndSpPostNumber(studentId, spPostNumber).getStudentPostId();
-        TransferCourseListResponse TransferCourseListResponse = new TransferCourseListResponse();
         List<SysTransferCourseEntity> SysTransferCourseEntityList = transferCourseRepository.getSysTransferCourseEntitiesByStudentPostId(studentPostId);
         List<TransferCourseResponse> transferCourseResponseList = new ArrayList<>();
 
@@ -59,8 +58,7 @@ public class TransferServiceImpl implements TransferService {
             transferCourseResponseList.add(transferCourseResponse);
         }
 
-        TransferCourseListResponse.setTransferCourseResponseList(transferCourseResponseList);
-        return TransferCourseListResponse;
+        return transferCourseResponseList;
     }
 
     @Override
