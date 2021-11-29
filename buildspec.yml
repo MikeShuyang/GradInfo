@@ -3,16 +3,17 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      java: corretto8
+      java: corretto11
   build:
     commands:
-      - mvn package
+      - ./gradlew bootJar
   post_build:
     commands:
       - echo Build completed
 artifacts:
   files:
-    - target/GradInfoService.jar
+    - build/libs/*.jar
     - scripts/*.sh
     - appspec.yml
+  #com/mycompany/app/HelloWorld.java, specifying yes will place this file in /HelloWorld.java
   discard-paths: yes
