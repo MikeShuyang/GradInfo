@@ -17,14 +17,15 @@ hooks:
       timeout: 300
       runas: ec2-user
   AfterInstall:
-    - location: fix_privileges.sh
+    - location: fix_priveleges.sh
       timeout: 300
       runas: ec2-user
-  ApplicationStart:
+  ApplicattionStart:
     - location: server_start.sh
-      timeout: 20
+      timeout: 300
       runas: ec2-user
-  ApplicationStop:
+  ApplicattionStop:
     - location: server_stop.sh
-      timeout: 20
+      timeout: 300
       runas: ec2-user
+
