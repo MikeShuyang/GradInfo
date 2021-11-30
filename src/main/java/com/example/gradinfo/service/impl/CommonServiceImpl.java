@@ -72,7 +72,7 @@ public class CommonServiceImpl implements CommonService {
 
 
     @Override
-    public StudentGpaAndUnit calculateGpaAndUnit(String studentPostId, SysStudentPostEntity sysStudentPostEntity, List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList) {
+    public StudentGpaAndUnit calculateGpaAndUnit(String studentPostId, SysStudentPostEntity sysStudentPostEntity, List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList) {
         // according to the second key point of API document, write this function
 
 

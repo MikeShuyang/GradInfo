@@ -100,12 +100,7 @@ public class TransferServiceImpl implements TransferService {
         List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList = admissionCourseRepository.getSysAdmissionCourseEntitiesByStudentPostId(studentPostId);
         List<SysTransferCourseEntity> sysTransferCourseEntityList = transferCourseRepository.getSysTransferCourseEntitiesByStudentPostId(studentPostId);
 
-        List<String> reason = CheckTransferCourseAndReturnReason(transferCourseRequest, sysAdmissionCourseEntityList, sysTransferCourseEntityList);
-        transferCourseApplyResponse.setReasonList(reason);
-        if (reason.size() != 0) {
-            transferCourseApplyResponse.setFlag(false);
-            return transferCourseApplyResponse;
-        }
+
 
         transferCourseApplyResponse.setFlag(true);
         Map<String, Course> map = new HashMap<>();
@@ -146,9 +141,19 @@ public class TransferServiceImpl implements TransferService {
             }
             transferCourseRepository.save(sysTransferCourseEntity);
         }
+        sysAdmissionCourseEntityList = admissionCourseRepository.getSysAdmissionCourseEntitiesByStudentPostId(studentPostId);
+        sysTransferCourseEntityList = transferCourseRepository.getSysTransferCourseEntitiesByStudentPostId(studentPostId);
 
 
-        commonService.calculateGpaAndUnit(studentPostId, sysStudentPostEntity, sysAdmissionCourseEntityList);
+
+        List<String> reason = CheckTransferCourseAndReturnReason(transferCourseRequest, sysAdmissionCourseEntityList, sysTransferCourseEntityList);
+        transferCourseApplyResponse.setReasonList(reason);
+        if (reason.size() != 0) {
+            transferCourseApplyResponse.setFlag(false);
+            return transferCourseApplyResponse;
+        }
+
+        commonService.calculateGpaAndUnit(studentPostId, sysStudentPostEntity, sysAdmissionCourseEntityList, sysTransferCourseEntityList);
 
         return transferCourseApplyResponse;
     }
@@ -156,9 +161,6 @@ public class TransferServiceImpl implements TransferService {
     private List<String> CheckTransferCourseAndReturnReason(TransferCourseRequest transferCourseRequest, List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList) {
         // according to the 6 key point of API document, write this function
         List<String> reason = new ArrayList<>();
-        if (transferCourseRequest.getCourseList().size() == 0) {
-            reason.add(String.format("no selection"));
-        }
 
         for (SysTransferCourseEntity sysTransferCourseEntity: sysTransferCourseEntityList) {
             if(sysTransferCourseEntity.getTrCourseApplyStatus() == 1) {

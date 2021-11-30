@@ -125,7 +125,7 @@ public class AdmissionServiceImpl implements AdmissionService {
             return admissionCourseApplyResponse;
         }
 
-        commonService.calculateGpaAndUnit(studentPostId, sysStudentPostEntity, sysAdmissionCourseEntityList);
+        commonService.calculateGpaAndUnit(studentPostId, sysStudentPostEntity, sysAdmissionCourseEntityList, sysTransferCourseEntityList);
 
         return admissionCourseApplyResponse;
     }
