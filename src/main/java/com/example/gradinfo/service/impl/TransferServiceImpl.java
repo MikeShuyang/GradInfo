@@ -145,31 +145,16 @@ public class TransferServiceImpl implements TransferService {
         sysTransferCourseEntityList = transferCourseRepository.getSysTransferCourseEntitiesByStudentPostId(studentPostId);
 
 
+        List<String> reason = commonService.calculateGpaAndUnit(studentPostId, sysStudentPostEntity, sysAdmissionCourseEntityList, sysTransferCourseEntityList);
 
-        List<String> reason = CheckTransferCourseAndReturnReason(transferCourseRequest, sysAdmissionCourseEntityList, sysTransferCourseEntityList);
         transferCourseApplyResponse.setReasonList(reason);
         if (reason.size() != 0) {
             transferCourseApplyResponse.setFlag(false);
             return transferCourseApplyResponse;
         }
 
-        commonService.calculateGpaAndUnit(studentPostId, sysStudentPostEntity, sysAdmissionCourseEntityList, sysTransferCourseEntityList);
-
         return transferCourseApplyResponse;
     }
 
-    private List<String> CheckTransferCourseAndReturnReason(TransferCourseRequest transferCourseRequest, List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList) {
-        // according to the 6 key point of API document, write this function
-        List<String> reason = new ArrayList<>();
 
-        for (SysTransferCourseEntity sysTransferCourseEntity: sysTransferCourseEntityList) {
-            if(sysTransferCourseEntity.getTrCourseApplyStatus() == 1) {
-                if(sysTransferCourseEntity.getTrCourseApplyCode().equals("X")){
-                    String RestrictedCourseName = sysTransferCourseEntity.getTrCourseName();
-                    reason.add(String.format("Restricted course %s cannot be applied",RestrictedCourseName));
-                }
-            }
-        }
-        return reason;
-    }
 }

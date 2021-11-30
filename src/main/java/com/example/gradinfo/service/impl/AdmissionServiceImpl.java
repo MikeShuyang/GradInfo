@@ -117,7 +117,11 @@ public class AdmissionServiceImpl implements AdmissionService {
         }
         sysAdmissionCourseEntityList = admissionCourseRepository.getSysAdmissionCourseEntitiesByStudentPostId(studentPostId);
         sysTransferCourseEntityList = transferCourseRepository.getSysTransferCourseEntitiesByStudentPostId(studentPostId);
-        List<String> reason = CheckAdmissionCourseAndReturnReason(admissionCourseRequest, sysAdmissionCourseEntityList, sysTransferCourseEntityList, sysStudentPostEntity);
+
+
+
+
+        List<String> reason = commonService.calculateGpaAndUnit(studentPostId, sysStudentPostEntity, sysAdmissionCourseEntityList, sysTransferCourseEntityList);
 
         admissionCourseApplyResponse.setReasonList(reason);
         if (reason.size() != 0) {
@@ -125,38 +129,9 @@ public class AdmissionServiceImpl implements AdmissionService {
             return admissionCourseApplyResponse;
         }
 
-        commonService.calculateGpaAndUnit(studentPostId, sysStudentPostEntity, sysAdmissionCourseEntityList, sysTransferCourseEntityList);
-
         return admissionCourseApplyResponse;
     }
 
-    private List<String> CheckAdmissionCourseAndReturnReason(AdmissionCourseRequest admissionCourseRequest, List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList, SysStudentPostEntity sysStudentPostEntity) {
-        // according to the fifth key point of API document, write this function
-        List<String> reason = new ArrayList<>();
 
-        int visitCourseScore = 0;
-        for (SysAdmissionCourseEntity sysAdmissionCourseEntity: sysAdmissionCourseEntityList) {
-            if(sysAdmissionCourseEntity.getAdCourseApplyStatus() == 1) {
-                if(sysAdmissionCourseEntity.getAdCourseApplyCode().equals("X")){
-                    String RestrictedCourseName = sysAdmissionCourseEntity.getAdCourseName();
-                    reason.add(String.format("Restricted course %s cannot be applied", RestrictedCourseName));
-                }
-                if(sysAdmissionCourseEntity.getAdCourseApplyCode().equals("V")) {
-                    visitCourseScore += sysAdmissionCourseEntity.getAdCourseUnits();
-                }
-            }
-            if(visitCourseScore > 12){
-                reason.add("Visitor course pass visit limit");
-            }
-        }
-        for (SysTransferCourseEntity sysTransferCourseEntity:sysTransferCourseEntityList) {
-            if (sysTransferCourseEntity.getTrCourseApplyStatus() == 1) {
-                if (sysTransferCourseEntity.getTrCourseApplyCode().equals("X")) {
-                    reason.add(String.format("Restricted course %s cannot be applied", sysTransferCourseEntity.getTrCourseName()));
-                }
-            }
-        }
-        return reason;
-    }
 
 }

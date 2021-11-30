@@ -2,6 +2,7 @@ package com.example.gradinfo.service.impl;
 
 import com.example.gradinfo.bo.CourseGradesAndUnits;
 import com.example.gradinfo.bo.StudentGpaAndUnit;
+import com.example.gradinfo.dto.request.TransferCourseRequest;
 import com.example.gradinfo.dto.response.StudentInfoResponse;
 import com.example.gradinfo.entity.SysAdmissionCourseEntity;
 import com.example.gradinfo.entity.SysStudentEntity;
@@ -72,13 +73,24 @@ public class CommonServiceImpl implements CommonService {
 
 
     @Override
-    public StudentGpaAndUnit calculateGpaAndUnit(String studentPostId, SysStudentPostEntity sysStudentPostEntity, List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList) {
+    public List<String> calculateGpaAndUnit(String studentPostId, SysStudentPostEntity sysStudentPostEntity, List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList) {
         // according to the second key point of API document, write this function
-
 
         List<SysAdmissionCourseEntity> applySysAdmissionCourseEntityList = admissionCourseRepository.getSysAdmissionCourseEntitiesByStudentPostIdAndAdCourseApplyStatusIs(studentPostId, Byte.valueOf("1"));
         List<SysTransferCourseEntity> applySysTransferCourseEntityList = transferCourseRepository.getSysTransferCourseEntitiesByStudentPostIdAndTrCourseApplyStatusIs(studentPostId, Byte.valueOf("1"));
         List<CourseGradesAndUnits> studentGpaAndUnitList = new ArrayList<>();
+
+
+        List<String> reason = CheckAdmissionCourseAndReturnReason(sysAdmissionCourseEntityList, sysTransferCourseEntityList);
+        if (reason.size() != 0) {
+            return reason;
+        }
+
+        reason = CheckTransferCourseAndReturnReason(sysAdmissionCourseEntityList, sysTransferCourseEntityList);
+
+        if (reason.size() != 0) {
+            return reason;
+        }
 
         for (SysAdmissionCourseEntity sysAdmissionCourseEntity : applySysAdmissionCourseEntityList) {
             CourseGradesAndUnits courseGradesAndUnits = new CourseGradesAndUnits();
@@ -105,7 +117,6 @@ public class CommonServiceImpl implements CommonService {
 
             studentGpaAndUnitList.add(courseGradesAndUnits);
         }
-
 
         StudentGpaAndUnit studentGpaAndUnit = new StudentGpaAndUnit();
 
@@ -160,7 +171,52 @@ public class CommonServiceImpl implements CommonService {
         studentPostRepository.save(sysStudentPostEntity);
 
 
-        return studentGpaAndUnit;
+        return reason;
+    }
+
+
+    private List<String> CheckAdmissionCourseAndReturnReason(List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList) {
+        // according to the fifth key point of API document, write this function
+        List<String> reason = new ArrayList<>();
+
+        int visitCourseScore = 0;
+        for (SysAdmissionCourseEntity sysAdmissionCourseEntity: sysAdmissionCourseEntityList) {
+            if(sysAdmissionCourseEntity.getAdCourseApplyStatus() == 1) {
+                if(sysAdmissionCourseEntity.getAdCourseApplyCode().equals("X")){
+                    String RestrictedCourseName = sysAdmissionCourseEntity.getAdCourseName();
+                    reason.add(String.format("Restricted course %s cannot be applied", RestrictedCourseName));
+                }
+                if(sysAdmissionCourseEntity.getAdCourseApplyCode().equals("V")) {
+                    visitCourseScore += sysAdmissionCourseEntity.getAdCourseUnits();
+                }
+            }
+            if(visitCourseScore > 12){
+                reason.add("Visitor course pass visit limit");
+            }
+        }
+        for (SysTransferCourseEntity sysTransferCourseEntity:sysTransferCourseEntityList) {
+            if (sysTransferCourseEntity.getTrCourseApplyStatus() == 1) {
+                if (sysTransferCourseEntity.getTrCourseApplyCode().equals("X")) {
+                    reason.add(String.format("Restricted course %s cannot be applied", sysTransferCourseEntity.getTrCourseName()));
+                }
+            }
+        }
+        return reason;
+    }
+
+    private List<String> CheckTransferCourseAndReturnReason(List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList) {
+        // according to the 6 key point of API document, write this function
+        List<String> reason = new ArrayList<>();
+
+        for (SysTransferCourseEntity sysTransferCourseEntity: sysTransferCourseEntityList) {
+            if(sysTransferCourseEntity.getTrCourseApplyStatus() == 1) {
+                if(sysTransferCourseEntity.getTrCourseApplyCode().equals("X")){
+                    String RestrictedCourseName = sysTransferCourseEntity.getTrCourseName();
+                    reason.add(String.format("Restricted course %s cannot be applied",RestrictedCourseName));
+                }
+            }
+        }
+        return reason;
     }
 
     public double gpaRules(String courseGrade) {

@@ -15,7 +15,7 @@ import java.util.List;
 public interface CommonService {
     StudentInfoResponse getStudentInfoByStudentId(String studentId);
     SysStudentPostEntity getStudentPostEntitiesByStudentIdAndSpPostNumber(String studentId, String postNumber);
-    StudentGpaAndUnit calculateGpaAndUnit(String studentPostId, SysStudentPostEntity sysStudentPostEntity, List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList);
+    List<String> calculateGpaAndUnit(String studentPostId, SysStudentPostEntity sysStudentPostEntity, List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList);
 
     double gpaRules(String Grade);
 }
