@@ -89,6 +89,7 @@ public class CommonServiceImpl implements CommonService {
         }
 
         int creditLimits = sysStudentPostEntity.getSpCreditLimits();
+        creditLimits = creditLimitRule(creditLimits);
         Collections.sort(applySysTransferCourseEntityList, Comparator.comparingInt(s -> s.getTrCourseGrade().charAt(0)));
 
         for (SysTransferCourseEntity sysTransferCourseEntity : applySysTransferCourseEntityList) {
@@ -183,5 +184,15 @@ public class CommonServiceImpl implements CommonService {
                 return 0;
         }
         return 0;
+    }
+
+    private int creditLimitRule(int creditLimit) {
+        if (24 <= creditLimit && creditLimit <= 32) {
+            return 4;
+        } else if (33 <= creditLimit && creditLimit <= 40) {
+            return 8;
+        } else {
+            return 12;
+        }
     }
 }
