@@ -129,8 +129,17 @@ public class CommonServiceImpl implements CommonService {
         }
 
         System.out.println(AppliedUnits + " " + TotalUnits);
-        double SpGpaAll = new BigDecimal(((TotalGpa / TotalUnits) * 100) / 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-        double SpGpaApply = new BigDecimal((((AppliedGpa / AppliedUnits) * 100) / 100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        double SpGpaAll,SpGpaApply;
+        if (TotalUnits != 0 && AppliedUnits != 0) {
+            SpGpaAll = new BigDecimal(((TotalGpa / TotalUnits) * 100) / 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            SpGpaApply = new BigDecimal((((AppliedGpa / AppliedUnits) * 100) / 100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        } else {
+            SpGpaAll = 0;
+            SpGpaApply = 0;
+            RGUnits = 0;
+            AppliedUnits = 0;
+        }
+
 
         studentGpaAndUnit.setSpGpaAll(SpGpaAll);
         studentGpaAndUnit.setSpGpaApply(SpGpaApply);
