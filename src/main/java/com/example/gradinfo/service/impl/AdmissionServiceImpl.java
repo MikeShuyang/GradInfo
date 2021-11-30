@@ -133,9 +133,6 @@ public class AdmissionServiceImpl implements AdmissionService {
     private List<String> CheckAdmissionCourseAndReturnReason(AdmissionCourseRequest admissionCourseRequest, List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList, SysStudentPostEntity sysStudentPostEntity) {
         // according to the fifth key point of API document, write this function
         List<String> reason = new ArrayList<>();
-        if (admissionCourseRequest.getCourseList().size() == 0) {
-            reason.add(String.format("no selection"));
-        }
 
         int visitCourseScore = 0;
         for (SysAdmissionCourseEntity sysAdmissionCourseEntity: sysAdmissionCourseEntityList) {
