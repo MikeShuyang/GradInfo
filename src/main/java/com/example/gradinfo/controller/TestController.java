@@ -1,14 +1,14 @@
 package com.example.gradinfo.controller;
 
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class TestController {
-    @GetMapping("api/health")
-    public ResponseEntity<?> healthCheck()
+public class testController {
+    @GetMapping("api/test")
+    public String healthCheck()
     {
-        return ResponseEntity.ok("It works successfully.");
+        return "hello word";
     }
 }
