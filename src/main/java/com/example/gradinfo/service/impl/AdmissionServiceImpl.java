@@ -75,13 +75,8 @@ public class AdmissionServiceImpl implements AdmissionService {
         String studentPostId = sysStudentPostEntity.getStudentPostId();
         List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList = admissionCourseRepository.getSysAdmissionCourseEntitiesByStudentPostId(studentPostId);
         List<SysTransferCourseEntity> sysTransferCourseEntityList = transferCourseRepository.getSysTransferCourseEntitiesByStudentPostId(studentPostId);
-        List<String> reason = CheckAdmissionCourseAndReturnReason(admissionCourseRequest, sysAdmissionCourseEntityList, sysTransferCourseEntityList, sysStudentPostEntity);
 
-        admissionCourseApplyResponse.setReasonList(reason);
-        if (reason.size() != 0) {
-            admissionCourseApplyResponse.setFlag(false);
-            return admissionCourseApplyResponse;
-        }
+
 
         admissionCourseApplyResponse.setFlag(true);
         Map<String, Course> map = new HashMap<>();
@@ -120,6 +115,16 @@ public class AdmissionServiceImpl implements AdmissionService {
             }
             admissionCourseRepository.save(sysAdmissionCourseEntity);
         }
+        sysAdmissionCourseEntityList = admissionCourseRepository.getSysAdmissionCourseEntitiesByStudentPostId(studentPostId);
+        sysTransferCourseEntityList = transferCourseRepository.getSysTransferCourseEntitiesByStudentPostId(studentPostId);
+        List<String> reason = CheckAdmissionCourseAndReturnReason(admissionCourseRequest, sysAdmissionCourseEntityList, sysTransferCourseEntityList, sysStudentPostEntity);
+
+        admissionCourseApplyResponse.setReasonList(reason);
+        if (reason.size() != 0) {
+            admissionCourseApplyResponse.setFlag(false);
+            return admissionCourseApplyResponse;
+        }
+
         commonService.calculateGpaAndUnit(studentPostId, sysStudentPostEntity, sysAdmissionCourseEntityList);
 
         return admissionCourseApplyResponse;
