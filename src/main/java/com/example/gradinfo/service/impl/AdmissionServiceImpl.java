@@ -80,7 +80,6 @@ public class AdmissionServiceImpl implements AdmissionService {
             list.add(course.getCourseId());
         }
 
-
         List<SysAdmissionCourseEntity> sysAdmissionCourseEntityListForReason = admissionCourseRepository.getSysAdmissionCourseEntitiesByStudentPostIdAndAdCourseIdIsIn(studentPostId, list);
         List<SysTransferCourseEntity> sysTransferCourseEntityListForReason = transferCourseRepository.getSysTransferCourseEntitiesByStudentPostIdAndTrCourseIdIsIn(studentPostId, list);
         List<String> reason = commonService.CheckAdmissionCourseAndReturnReason(sysAdmissionCourseEntityListForReason, sysTransferCourseEntityListForReason);
@@ -89,7 +88,6 @@ public class AdmissionServiceImpl implements AdmissionService {
             admissionCourseApplyResponse.setReasonList(reason);
             return admissionCourseApplyResponse;
         }
-
         admissionCourseApplyResponse.setFlag(true);
         Map<String, Course> map = new HashMap<>();
 
