@@ -10,4 +10,5 @@ import java.util.List;
 public interface TransferCourseRepository extends JpaRepository<SysTransferCourseEntity, Long> {
     List<SysTransferCourseEntity> getSysTransferCourseEntitiesByStudentPostId(String studentPostId);
     List<SysTransferCourseEntity> getSysTransferCourseEntitiesByStudentPostIdAndTrCourseApplyStatusIs(String studentPostId, byte num);
+    List<SysTransferCourseEntity> getSysTransferCourseEntitiesByStudentPostIdAndTrCourseIdIsIn(String studentPostId, List<String> list);
 }

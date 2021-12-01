@@ -175,7 +175,7 @@ public class CommonServiceImpl implements CommonService {
     }
 
 
-    private List<String> CheckAdmissionCourseAndReturnReason(List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList) {
+    public List<String> CheckAdmissionCourseAndReturnReason(List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList) {
         // according to the fifth key point of API document, write this function
         List<String> reason = new ArrayList<>();
 
@@ -204,7 +204,7 @@ public class CommonServiceImpl implements CommonService {
         return reason;
     }
 
-    private List<String> CheckTransferCourseAndReturnReason(List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList) {
+    public List<String> CheckTransferCourseAndReturnReason(List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList) {
         // according to the 6 key point of API document, write this function
         List<String> reason = new ArrayList<>();
 

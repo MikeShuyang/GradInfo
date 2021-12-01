@@ -16,6 +16,6 @@ public interface CommonService {
     StudentInfoResponse getStudentInfoByStudentId(String studentId);
     SysStudentPostEntity getStudentPostEntitiesByStudentIdAndSpPostNumber(String studentId, String postNumber);
     List<String> calculateGpaAndUnit(String studentPostId, SysStudentPostEntity sysStudentPostEntity, List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList);
-
+    List<String> CheckAdmissionCourseAndReturnReason(List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList);
     double gpaRules(String Grade);
 }

@@ -99,8 +99,18 @@ public class TransferServiceImpl implements TransferService {
         String studentPostId = sysStudentPostEntity.getStudentPostId();
         List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList = admissionCourseRepository.getSysAdmissionCourseEntitiesByStudentPostId(studentPostId);
         List<SysTransferCourseEntity> sysTransferCourseEntityList = transferCourseRepository.getSysTransferCourseEntitiesByStudentPostId(studentPostId);
-
-
+        List<String> list = new ArrayList<>();
+        for (Course course : transferCourseRequest.getCourseList()) {
+            list.add(course.getCourseId());
+        }
+        List<SysAdmissionCourseEntity> sysAdmissionCourseEntityListForReason = admissionCourseRepository.getSysAdmissionCourseEntitiesByStudentPostIdAndAdCourseIdIsIn(studentPostId, list);
+        List<SysTransferCourseEntity> sysTransferCourseEntityListForReason = transferCourseRepository.getSysTransferCourseEntitiesByStudentPostIdAndTrCourseIdIsIn(studentPostId, list);
+        List<String> reason = commonService.CheckAdmissionCourseAndReturnReason(sysAdmissionCourseEntityListForReason, sysTransferCourseEntityListForReason);
+        if (reason.size() != 0) {
+            transferCourseApplyResponse.setFlag(false);
+            transferCourseApplyResponse.setReasonList(reason);
+            return transferCourseApplyResponse;
+        }
 
         transferCourseApplyResponse.setFlag(true);
         Map<String, Course> map = new HashMap<>();
@@ -145,7 +155,7 @@ public class TransferServiceImpl implements TransferService {
         sysTransferCourseEntityList = transferCourseRepository.getSysTransferCourseEntitiesByStudentPostId(studentPostId);
 
 
-        List<String> reason = commonService.calculateGpaAndUnit(studentPostId, sysStudentPostEntity, sysAdmissionCourseEntityList, sysTransferCourseEntityList);
+        reason = commonService.calculateGpaAndUnit(studentPostId, sysStudentPostEntity, sysAdmissionCourseEntityList, sysTransferCourseEntityList);
 
         transferCourseApplyResponse.setReasonList(reason);
         if (reason.size() != 0) {
