@@ -105,7 +105,7 @@ public class TransferServiceImpl implements TransferService {
         }
         List<SysAdmissionCourseEntity> sysAdmissionCourseEntityListForReason = admissionCourseRepository.getSysAdmissionCourseEntitiesByStudentPostIdAndAdCourseIdIsIn(studentPostId, list);
         List<SysTransferCourseEntity> sysTransferCourseEntityListForReason = transferCourseRepository.getSysTransferCourseEntitiesByStudentPostIdAndTrCourseIdIsIn(studentPostId, list);
-        List<String> reason = commonService.CheckAdmissionCourseAndReturnReason(sysAdmissionCourseEntityListForReason, sysTransferCourseEntityListForReason);
+        List<String> reason = commonService.checkReason(sysAdmissionCourseEntityListForReason, sysTransferCourseEntityListForReason);
 
         if (reason.size() != 0) {
             transferCourseApplyResponse.setFlag(false);

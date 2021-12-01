@@ -174,6 +174,21 @@ public class CommonServiceImpl implements CommonService {
         return reason;
     }
 
+    public List<String> checkReason(List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList) {
+        List<String> reason = new ArrayList<>();
+        double num = 0;
+        for (SysAdmissionCourseEntity sysAdmissionCourseEntity  : sysAdmissionCourseEntityList) {
+            if (sysAdmissionCourseEntity.getAdCourseApplyCode().equals("V")) {
+                num += sysAdmissionCourseEntity.getAdCourseUnits();
+                if (num > 12) {
+                    reason.add("Visitor course pass visit limit");
+                    return reason;
+                }
+            }
+        }
+        return reason;
+    }
+
 
     public List<String> CheckAdmissionCourseAndReturnReason(List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList) {
         // according to the fifth key point of API document, write this function

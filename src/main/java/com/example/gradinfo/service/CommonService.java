@@ -18,4 +18,5 @@ public interface CommonService {
     List<String> calculateGpaAndUnit(String studentPostId, SysStudentPostEntity sysStudentPostEntity, List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList);
     List<String> CheckAdmissionCourseAndReturnReason(List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList);
     double gpaRules(String Grade);
+    List<String> checkReason(List<SysAdmissionCourseEntity> sysAdmissionCourseEntityList, List<SysTransferCourseEntity> sysTransferCourseEntityList);
 }

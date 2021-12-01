@@ -78,16 +78,19 @@ public class AdmissionServiceImpl implements AdmissionService {
         List<String> list = new ArrayList<>();
         for (Course course : admissionCourseRequest.getCourseList()) {
             list.add(course.getCourseId());
+
         }
 
         List<SysAdmissionCourseEntity> sysAdmissionCourseEntityListForReason = admissionCourseRepository.getSysAdmissionCourseEntitiesByStudentPostIdAndAdCourseIdIsIn(studentPostId, list);
         List<SysTransferCourseEntity> sysTransferCourseEntityListForReason = transferCourseRepository.getSysTransferCourseEntitiesByStudentPostIdAndTrCourseIdIsIn(studentPostId, list);
-        List<String> reason = commonService.CheckAdmissionCourseAndReturnReason(sysAdmissionCourseEntityListForReason, sysTransferCourseEntityListForReason);
+        List<String> reason = commonService.checkReason(sysAdmissionCourseEntityListForReason, sysTransferCourseEntityListForReason);
+        System.out.println("start111");
         if (reason.size() != 0) {
             admissionCourseApplyResponse.setFlag(false);
             admissionCourseApplyResponse.setReasonList(reason);
             return admissionCourseApplyResponse;
         }
+        System.out.println("start222");
         admissionCourseApplyResponse.setFlag(true);
         Map<String, Course> map = new HashMap<>();
 
