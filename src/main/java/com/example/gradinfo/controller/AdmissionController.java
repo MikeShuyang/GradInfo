@@ -5,6 +5,8 @@ import com.example.gradinfo.dto.response.AdmissionCourseApplyResponse;
 import com.example.gradinfo.dto.response.AdmissionCourseResponse;
 import com.example.gradinfo.dto.response.StudentPostResponse;
 import com.example.gradinfo.service.AdmissionService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@Api(tags = "Admission Management")
 @RequestMapping(path = "admission")
 @CrossOrigin(origins = "*")
 public class AdmissionController {
@@ -22,6 +25,7 @@ public class AdmissionController {
         this.admissionService = admissionService;
     }
 
+    @ApiOperation("Get student's posts data")
     @GetMapping(path = "/getStudentPostDataByStudentIDAndPostNumber")
     public ResponseEntity<StudentPostResponse> getStudentPostDataByStudentIDAndPostNumber(@RequestParam String studentId, String spPostNumber) {
 
@@ -30,6 +34,7 @@ public class AdmissionController {
         return new ResponseEntity<StudentPostResponse>(response, HttpStatus.OK);
     }
 
+    @ApiOperation("Get admission course table")
     @GetMapping(path = "getAdmissionCourseTableDataByIDAndPostNumber")
     public ResponseEntity<List<AdmissionCourseResponse>> getAdmissionCourseTableDataByIDAndPostNumber(@RequestParam String studentId, String spPostNumber) {
         List<AdmissionCourseResponse> response = admissionService.getAdmissionCourseDataByStudentIDAndPostNumber(studentId, spPostNumber);
@@ -37,6 +42,7 @@ public class AdmissionController {
         return new ResponseEntity<List<AdmissionCourseResponse>>(response, HttpStatus.OK);
     }
 
+    @ApiOperation("Update admission course table")
     @PostMapping(path = "postAdmissionCourseTableDataByNewArr")
     public ResponseEntity<AdmissionCourseApplyResponse> postAdmissionCourseTableDataByNewArr(@RequestBody AdmissionCourseRequest admissionCourseRequest) {
         AdmissionCourseApplyResponse response = admissionService.getPostAdmissionCourseTableDataByNewArr(admissionCourseRequest);
