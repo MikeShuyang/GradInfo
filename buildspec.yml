@@ -5,6 +5,8 @@ phases:
     commands:
       - echo Entered the build phase...
       - mvn clean package
+      - echo Running tests
+      - mvn test
   post_build:
     commands:
       - echo Build completed successfully
@@ -12,3 +14,9 @@ artifacts:
   files:
     - target/GradInfo.jar
   discard-paths: yes
+
+reports:
+  JUnitTest-reports:
+    files:
+      - '**/*'
+    base-directory: 'target/surefire-reports'
