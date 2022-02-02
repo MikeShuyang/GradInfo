@@ -132,8 +132,6 @@ public class AdmissionServiceImpl implements AdmissionService {
         sysTransferCourseEntityList = transferCourseRepository.getSysTransferCourseEntitiesByStudentPostId(studentPostId);
 
 
-
-
         reason = commonService.calculateGpaAndUnit(studentPostId, sysStudentPostEntity, sysAdmissionCourseEntityList, sysTransferCourseEntityList);
 
         admissionCourseApplyResponse.setReasonList(reason);

@@ -120,7 +120,7 @@ public class CommonServiceImpl implements CommonService {
 
         StudentGpaAndUnit studentGpaAndUnit = new StudentGpaAndUnit();
 
-        double AppliedGpa = 0.0 ,TotalGpa = 0.0, AppliedUnits = 0.0, TotalUnits = 0.0, RGUnits = 0.0;
+        double AppliedGpa = 0.0 ,TotalGpa = 0.0, AppliedUnits = 0.0, AllAppliedUnits = 0.0, TotalUnits = 0.0, RGUnits = 0.0;
 
         for (SysAdmissionCourseEntity sysAdmissionCourseEntity : sysAdmissionCourseEntityList) {
             TotalGpa += (gpaRules(sysAdmissionCourseEntity.getAdCourseGrade()) * sysAdmissionCourseEntity.getAdCourseUnits());
@@ -132,11 +132,17 @@ public class CommonServiceImpl implements CommonService {
 
             if(CourseGradesAndUnits.getCourseGrade().equals("RG")){
                 RGUnits += CourseGradesAndUnits.getUnits();
+                AppliedUnits += CourseGradesAndUnits.getUnits();
                 continue;
             }
-            AppliedGpa += (gpaRules(CourseGradesAndUnits.getCourseGrade()) * CourseGradesAndUnits.getUnits());
-            AppliedUnits += CourseGradesAndUnits.getUnits();
 
+            if (CourseGradesAndUnits.getCourseGrade().equals("P")) {
+
+            } else {
+                AppliedGpa += (gpaRules(CourseGradesAndUnits.getCourseGrade()) * CourseGradesAndUnits.getUnits());
+                AppliedUnits += CourseGradesAndUnits.getUnits();
+            }
+            AllAppliedUnits += CourseGradesAndUnits.getUnits();
         }
 
         System.out.println(AppliedUnits + " " + TotalUnits);
@@ -155,7 +161,7 @@ public class CommonServiceImpl implements CommonService {
         studentGpaAndUnit.setSpGpaAll(SpGpaAll);
         studentGpaAndUnit.setSpGpaApply(SpGpaApply);
         studentGpaAndUnit.setSpRgunits(RGUnits);
-        studentGpaAndUnit.setSpEarnunits(AppliedUnits);
+        studentGpaAndUnit.setSpEarnunits(AllAppliedUnits);
 
         sysStudentPostEntity.setSpEarnunits(studentGpaAndUnit.getSpEarnunits());
         sysStudentPostEntity.setSpRgunits(studentGpaAndUnit.getSpRgunits());
@@ -216,6 +222,14 @@ public class CommonServiceImpl implements CommonService {
                 }
             }
         }
+
+        for (int index = 0; index < sysAdmissionCourseEntityList.size(); index++) { // if grade is NP, remove it
+            if (sysAdmissionCourseEntityList.get(index).getAdCourseGrade().equals("NP")) {
+                sysAdmissionCourseEntityList.remove(index);
+            }
+        }
+
+
         return reason;
     }
 
