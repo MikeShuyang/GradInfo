@@ -261,6 +261,7 @@ public class CommonServiceImpl implements CommonService {
             case "F":
             case "UW":
             case "IX":
+            case "P":
                 return 0;
         }
         return 0;

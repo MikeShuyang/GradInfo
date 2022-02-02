@@ -6,10 +6,7 @@ import com.example.gradinfo.dto.request.AdmissionCourseRequest;
 import com.example.gradinfo.dto.request.Course;
 import com.example.gradinfo.dto.request.TransferCourseRequest;
 import com.example.gradinfo.dto.response.*;
-import com.example.gradinfo.entity.SysAdmissionCourseEntity;
-import com.example.gradinfo.entity.SysStudentPostEntity;
-import com.example.gradinfo.entity.SysTransferCourseEntity;
-import com.example.gradinfo.entity.SysTransferHistoryEntity;
+import com.example.gradinfo.entity.*;
 import com.example.gradinfo.mapper.CommonMapper;
 import com.example.gradinfo.repository.*;
 import com.example.gradinfo.service.CommonService;
@@ -84,7 +81,15 @@ public class TransferServiceImpl implements TransferService {
 
     @Override
     public BachelorDegreeResponse getBachelorDegreeInfoByID(String studentId) {
-        BachelorDegreeResponse bachelorDegreeResponse = CommonMapper.convertToDto(bachelorDegreeRepository.getSysStudentBachelorEntityByStudentId(studentId), BachelorDegreeResponse.class);
+        BachelorDegreeResponse bachelorDegreeResponse = new BachelorDegreeResponse();
+        List<SysStudentBachelorEntity> bachelorEntityList = bachelorDegreeRepository.getSysStudentBachelorEntitiesByStudentId(studentId);
+        List<BachelorDegree> bachelorDegreeList = new ArrayList<>();
+        for (SysStudentBachelorEntity sysStudentBachelorEntity : bachelorEntityList) {
+            BachelorDegree bachelorDegree = CommonMapper.convertToDto(sysStudentBachelorEntity, BachelorDegree.class);
+            bachelorDegreeList.add(bachelorDegree);
+        }
+        bachelorDegreeResponse.setBachelorDegreeList(bachelorDegreeList);
+
         return bachelorDegreeResponse;
     }
 
