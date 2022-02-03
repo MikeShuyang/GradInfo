@@ -130,12 +130,13 @@ public class CommonServiceImpl implements CommonService {
 
         for (SysAdmissionCourseEntity sysAdmissionCourseEntity : sysAdmissionCourseEntityList) {
             TotalGpa += (gpaRules(sysAdmissionCourseEntity.getAdCourseGrade()) * sysAdmissionCourseEntity.getAdCourseUnits());
-            if (sysAdmissionCourseEntity.getAdCourseGrade().equals("P")) {
+            if (sysAdmissionCourseEntity.getAdCourseGrade().equals("P") || sysAdmissionCourseEntity.getAdCourseGrade().equals("NP") || sysAdmissionCourseEntity.getAdCourseGrade().equals("")) {
 
             } else {
                 RealTotalUnits += sysAdmissionCourseEntity.getAdCourseUnits();
+                TotalUnits += sysAdmissionCourseEntity.getAdCourseUnits();
             }
-            TotalUnits += sysAdmissionCourseEntity.getAdCourseUnits();
+
         }
 
         System.out.println(RealTotalUnits);
