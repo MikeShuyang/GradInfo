@@ -136,7 +136,7 @@ public class CommonServiceImpl implements CommonService {
 
         for (CourseGradesAndUnits CourseGradesAndUnits : studentGpaAndUnitList) {
 
-            if(CourseGradesAndUnits.getCourseGrade().equals("RG")){
+            if(CourseGradesAndUnits.getCourseGrade().equals("")){
                 RGUnits += CourseGradesAndUnits.getUnits();
                 AppliedUnits += CourseGradesAndUnits.getUnits();
                 continue;
