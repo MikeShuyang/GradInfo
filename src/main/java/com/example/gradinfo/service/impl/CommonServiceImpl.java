@@ -149,7 +149,7 @@ public class CommonServiceImpl implements CommonService {
                 continue;
             }
 
-            if (CourseGradesAndUnits.getCourseGrade().equals("P")) {
+            if (CourseGradesAndUnits.getCourseGrade().equals("P") || CourseGradesAndUnits.getCourseGrade().equals("") ) {
 
             } else {
                 AppliedGpa += (gpaRules(CourseGradesAndUnits.getCourseGrade()) * CourseGradesAndUnits.getUnits());
