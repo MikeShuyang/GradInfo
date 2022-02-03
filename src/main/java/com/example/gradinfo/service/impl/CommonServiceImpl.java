@@ -92,6 +92,12 @@ public class CommonServiceImpl implements CommonService {
             return reason;
         }
 
+        for (int index = 0; index < sysAdmissionCourseEntityList.size(); index++) { // if grade is NP, remove it
+            if (sysAdmissionCourseEntityList.get(index).getAdCourseGrade().equals("NP")) {
+                sysAdmissionCourseEntityList.remove(index);
+            }
+        }
+
         for (SysAdmissionCourseEntity sysAdmissionCourseEntity : applySysAdmissionCourseEntityList) {
             CourseGradesAndUnits courseGradesAndUnits = new CourseGradesAndUnits();
             courseGradesAndUnits.setCourseGrade(sysAdmissionCourseEntity.getAdCourseGrade());
@@ -220,12 +226,6 @@ public class CommonServiceImpl implements CommonService {
                 if (sysTransferCourseEntity.getTrCourseApplyCode().equals("X")) {
                     reason.add(String.format("Restricted course %s cannot be applied", sysTransferCourseEntity.getTrCourseName()));
                 }
-            }
-        }
-
-        for (int index = 0; index < sysAdmissionCourseEntityList.size(); index++) { // if grade is NP, remove it
-            if (sysAdmissionCourseEntityList.get(index).getAdCourseGrade().equals("NP")) {
-                sysAdmissionCourseEntityList.remove(index);
             }
         }
 
