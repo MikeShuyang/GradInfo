@@ -3,6 +3,8 @@ package com.example.gradinfo.controller;
 import com.example.gradinfo.dto.response.ExamTableDataResponse;
 import com.example.gradinfo.dto.response.NonCourseEventTableDataResponse;
 import com.example.gradinfo.service.NonCourseEventService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 @Controller
+@Api(tags = "NonCourseEvent")
 @RequestMapping(path = "noncourseevent")
 @CrossOrigin(origins = "*")
 public class NonCourseEventController {
@@ -25,6 +28,7 @@ public class NonCourseEventController {
         this.nonCourseEventService = nonCourseEventService;
     }
 
+    @ApiOperation("Get Non-course Related Event Table")
     @GetMapping(path = "/getNonCourseRelatedEventTableDataByIDAndPostNumber")
     public ResponseEntity<List<NonCourseEventTableDataResponse>> getNonCourseRelatedEventTableDataByIDAndPostNumber(@RequestParam String studentId, String spPostNumber) {
 
@@ -32,6 +36,8 @@ public class NonCourseEventController {
 
         return new ResponseEntity<List<NonCourseEventTableDataResponse>>(response, HttpStatus.OK);
     }
+
+    @ApiOperation("Get Exam Committee Table")
     @GetMapping(path = "/getExamCommitteeTableDataByIDAndPostNumber")
     public ResponseEntity<List<ExamTableDataResponse>> getExamCommitteeTableDataByIDAndPostNumber(@RequestParam String studentId, String spPostNumber) {
         List<ExamTableDataResponse> responses = nonCourseEventService.getExamCommitteeTableDataByIDAndPostNumber(studentId, spPostNumber);
