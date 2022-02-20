@@ -111,10 +111,9 @@ class TransferServiceImplTest {
         }
         @Test
         void notExistData() {
-            assertThrows(IllegalArgumentException.class, () -> {
-                BachelorDegreeResponse bachelorDegreeResponse =
-                        transferService.getBachelorDegreeInfoByID("0000000");
-            });
+            BachelorDegreeResponse bachelorDegreeResponse =
+                    transferService.getBachelorDegreeInfoByID("0000000");
+            assertTrue(bachelorDegreeResponse.getBachelorDegreeList().isEmpty());
         }
     }
 
