@@ -107,7 +107,7 @@ class TransferServiceImplTest {
         void existData() {
             BachelorDegreeResponse bachelorDegreeResponse =
                     transferService.getBachelorDegreeInfoByID("0000001");
-            assertEquals("4835", bachelorDegreeResponse.getSbCeeb());
+            assertEquals("4835", bachelorDegreeResponse.getBachelorDegreeList().get(0).getSbCeeb());
         }
         @Test
         void notExistData() {
