@@ -1,8 +1,6 @@
 package com.example.gradinfo.service.impl;
 
-import com.example.gradinfo.dto.response.AdmissionCourseHistory;
 import com.example.gradinfo.dto.response.LoginResponse;
-import com.example.gradinfo.dto.response.StudentInfoResponse;
 import com.example.gradinfo.entity.SysUserEntity;
 import com.example.gradinfo.mapper.CommonMapper;
 import com.example.gradinfo.repository.UserInfoRepository;

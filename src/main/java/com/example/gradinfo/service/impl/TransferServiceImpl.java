@@ -135,7 +135,7 @@ public class TransferServiceImpl implements TransferService {
                     sysTransferHistoryEntity.setTrHistoryCourseName(sysTransferCourseEntity.getTrCourseName());
                     sysTransferHistoryEntity.setTrHistoryCourseOper(transferCourseRequest.getUserInfo().getUserOper());
                     sysTransferHistoryEntity.setTrHistoryCourseApplyStatus(Byte.valueOf("1"));
-                    sysTransferHistoryEntity.settrHistoryCourseTransdate(transferCourseRequest.getUserInfo().getTransDate());
+                    sysTransferHistoryEntity.setTrHistoryCourseTransdate(transferCourseRequest.getUserInfo().getTransDate());
                     transferHistoryRepository.save(sysTransferHistoryEntity);
                 }
                 sysTransferCourseEntity.setTrCourseApplyStatus(Byte.valueOf("1"));
@@ -151,7 +151,7 @@ public class TransferServiceImpl implements TransferService {
                     sysTransferHistoryEntity.setTrHistoryCourseName(sysTransferCourseEntity.getTrCourseName());
                     sysTransferHistoryEntity.setTrHistoryCourseOper(transferCourseRequest.getUserInfo().getUserOper());
                     sysTransferHistoryEntity.setTrHistoryCourseApplyStatus(Byte.valueOf("0"));
-                    sysTransferHistoryEntity.settrHistoryCourseTransdate(transferCourseRequest.getUserInfo().getTransDate());
+                    sysTransferHistoryEntity.setTrHistoryCourseTransdate(transferCourseRequest.getUserInfo().getTransDate());
                     transferHistoryRepository.save(sysTransferHistoryEntity);
                 }
             }

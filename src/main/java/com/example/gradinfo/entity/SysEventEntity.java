@@ -1,7 +1,7 @@
 package com.example.gradinfo.entity;
 
 import javax.persistence.*;
-import java.util.Objects;
+import java.util.Collection;
 
 @Entity
 @Table(name = "sys_event", schema = "GradInfoV3", catalog = "")
@@ -13,9 +13,11 @@ public class SysEventEntity {
     private String eventFormat;
     private String eventAccessDept;
     private Double eventMaxUnit;
+    private String eventAccessLevel;
+    private Collection<SysNonCourseRelatedEventRecordEntity> sysNonCourseRelatedEventRecordsByEventId;
 
     @Id
-    @Column(name = "event_id")
+    @Column(name = "event_id", nullable = false, length = 36)
     public String getEventId() {
         return eventId;
     }
@@ -25,7 +27,7 @@ public class SysEventEntity {
     }
 
     @Basic
-    @Column(name = "event_code")
+    @Column(name = "event_code", nullable = true, length = 36)
     public String getEventCode() {
         return eventCode;
     }
@@ -35,7 +37,7 @@ public class SysEventEntity {
     }
 
     @Basic
-    @Column(name = "event_description")
+    @Column(name = "event_description", nullable = true, length = 128)
     public String getEventDescription() {
         return eventDescription;
     }
@@ -45,7 +47,7 @@ public class SysEventEntity {
     }
 
     @Basic
-    @Column(name = "event_conv")
+    @Column(name = "event_conv", nullable = true, length = 20)
     public String getEventConv() {
         return eventConv;
     }
@@ -55,7 +57,7 @@ public class SysEventEntity {
     }
 
     @Basic
-    @Column(name = "event_format")
+    @Column(name = "event_format", nullable = true, length = 20)
     public String getEventFormat() {
         return eventFormat;
     }
@@ -65,7 +67,7 @@ public class SysEventEntity {
     }
 
     @Basic
-    @Column(name = "event_access_dept")
+    @Column(name = "event_access_dept", nullable = true, length = 20)
     public String getEventAccessDept() {
         return eventAccessDept;
     }
@@ -75,7 +77,7 @@ public class SysEventEntity {
     }
 
     @Basic
-    @Column(name = "event_max_unit")
+    @Column(name = "event_max_unit", nullable = true, precision = 0)
     public Double getEventMaxUnit() {
         return eventMaxUnit;
     }
@@ -84,16 +86,57 @@ public class SysEventEntity {
         this.eventMaxUnit = eventMaxUnit;
     }
 
+    @Basic
+    @Column(name = "event_access_level", nullable = true, length = 10)
+    public String getEventAccessLevel() {
+        return eventAccessLevel;
+    }
+
+    public void setEventAccessLevel(String eventAccessLevel) {
+        this.eventAccessLevel = eventAccessLevel;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         SysEventEntity that = (SysEventEntity) o;
-        return Objects.equals(eventId, that.eventId) && Objects.equals(eventCode, that.eventCode) && Objects.equals(eventDescription, that.eventDescription) && Objects.equals(eventConv, that.eventConv) && Objects.equals(eventFormat, that.eventFormat) && Objects.equals(eventAccessDept, that.eventAccessDept) && Objects.equals(eventMaxUnit, that.eventMaxUnit);
+
+        if (eventId != null ? !eventId.equals(that.eventId) : that.eventId != null) return false;
+        if (eventCode != null ? !eventCode.equals(that.eventCode) : that.eventCode != null) return false;
+        if (eventDescription != null ? !eventDescription.equals(that.eventDescription) : that.eventDescription != null)
+            return false;
+        if (eventConv != null ? !eventConv.equals(that.eventConv) : that.eventConv != null) return false;
+        if (eventFormat != null ? !eventFormat.equals(that.eventFormat) : that.eventFormat != null) return false;
+        if (eventAccessDept != null ? !eventAccessDept.equals(that.eventAccessDept) : that.eventAccessDept != null)
+            return false;
+        if (eventMaxUnit != null ? !eventMaxUnit.equals(that.eventMaxUnit) : that.eventMaxUnit != null) return false;
+        if (eventAccessLevel != null ? !eventAccessLevel.equals(that.eventAccessLevel) : that.eventAccessLevel != null)
+            return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(eventId, eventCode, eventDescription, eventConv, eventFormat, eventAccessDept, eventMaxUnit);
+        int result = eventId != null ? eventId.hashCode() : 0;
+        result = 31 * result + (eventCode != null ? eventCode.hashCode() : 0);
+        result = 31 * result + (eventDescription != null ? eventDescription.hashCode() : 0);
+        result = 31 * result + (eventConv != null ? eventConv.hashCode() : 0);
+        result = 31 * result + (eventFormat != null ? eventFormat.hashCode() : 0);
+        result = 31 * result + (eventAccessDept != null ? eventAccessDept.hashCode() : 0);
+        result = 31 * result + (eventMaxUnit != null ? eventMaxUnit.hashCode() : 0);
+        result = 31 * result + (eventAccessLevel != null ? eventAccessLevel.hashCode() : 0);
+        return result;
+    }
+
+    @OneToMany(mappedBy = "sysEventByEventId")
+    public Collection<SysNonCourseRelatedEventRecordEntity> getSysNonCourseRelatedEventRecordsByEventId() {
+        return sysNonCourseRelatedEventRecordsByEventId;
+    }
+
+    public void setSysNonCourseRelatedEventRecordsByEventId(Collection<SysNonCourseRelatedEventRecordEntity> sysNonCourseRelatedEventRecordsByEventId) {
+        this.sysNonCourseRelatedEventRecordsByEventId = sysNonCourseRelatedEventRecordsByEventId;
     }
 }
