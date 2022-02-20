@@ -1,21 +1,20 @@
 package com.example.gradinfo.entity;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "sys_ad_history", schema = "GradInfoV3", catalog = "")
 public class SysAdHistoryEntity {
     private int adHistoryId;
-    private String adCourseId;
     private String adHistoryCourseOper;
     private String adHistoryCourseName;
     private Byte adHistoryCourseApplyStatus;
     private String adHistoryCourseTransdate;
+    private String adCourseId;
+    private SysAdmissionCourseEntity sysAdmissionCourseByAdCourseId;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ad_history_id")
+    @Column(name = "ad_history_id", nullable = false)
     public int getAdHistoryId() {
         return adHistoryId;
     }
@@ -25,17 +24,7 @@ public class SysAdHistoryEntity {
     }
 
     @Basic
-    @Column(name = "ad_course_id")
-    public String getAdCourseId() {
-        return adCourseId;
-    }
-
-    public void setAdCourseId(String adCourseId) {
-        this.adCourseId = adCourseId;
-    }
-
-    @Basic
-    @Column(name = "ad_history_course_oper")
+    @Column(name = "ad_history_course_oper", nullable = true, length = 36)
     public String getAdHistoryCourseOper() {
         return adHistoryCourseOper;
     }
@@ -45,7 +34,7 @@ public class SysAdHistoryEntity {
     }
 
     @Basic
-    @Column(name = "ad_history_course_name")
+    @Column(name = "ad_history_course_name", nullable = true, length = 128)
     public String getAdHistoryCourseName() {
         return adHistoryCourseName;
     }
@@ -55,7 +44,7 @@ public class SysAdHistoryEntity {
     }
 
     @Basic
-    @Column(name = "ad_history_course_apply_status")
+    @Column(name = "ad_history_course_apply_status", nullable = true)
     public Byte getAdHistoryCourseApplyStatus() {
         return adHistoryCourseApplyStatus;
     }
@@ -65,7 +54,7 @@ public class SysAdHistoryEntity {
     }
 
     @Basic
-    @Column(name = "ad_history_course_transdate")
+    @Column(name = "ad_history_course_transdate", nullable = true, length = 20)
     public String getAdHistoryCourseTransdate() {
         return adHistoryCourseTransdate;
     }
@@ -78,12 +67,49 @@ public class SysAdHistoryEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         SysAdHistoryEntity that = (SysAdHistoryEntity) o;
-        return adHistoryId == that.adHistoryId && Objects.equals(adCourseId, that.adCourseId) && Objects.equals(adHistoryCourseOper, that.adHistoryCourseOper) && Objects.equals(adHistoryCourseName, that.adHistoryCourseName) && Objects.equals(adHistoryCourseApplyStatus, that.adHistoryCourseApplyStatus) && Objects.equals(adHistoryCourseTransdate, that.adHistoryCourseTransdate);
+
+        if (adHistoryId != that.adHistoryId) return false;
+        if (adHistoryCourseOper != null ? !adHistoryCourseOper.equals(that.adHistoryCourseOper) : that.adHistoryCourseOper != null)
+            return false;
+        if (adHistoryCourseName != null ? !adHistoryCourseName.equals(that.adHistoryCourseName) : that.adHistoryCourseName != null)
+            return false;
+        if (adHistoryCourseApplyStatus != null ? !adHistoryCourseApplyStatus.equals(that.adHistoryCourseApplyStatus) : that.adHistoryCourseApplyStatus != null)
+            return false;
+        if (adHistoryCourseTransdate != null ? !adHistoryCourseTransdate.equals(that.adHistoryCourseTransdate) : that.adHistoryCourseTransdate != null)
+            return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(adHistoryId, adCourseId, adHistoryCourseOper, adHistoryCourseName, adHistoryCourseApplyStatus, adHistoryCourseTransdate);
+        int result = adHistoryId;
+        result = 31 * result + (adHistoryCourseOper != null ? adHistoryCourseOper.hashCode() : 0);
+        result = 31 * result + (adHistoryCourseName != null ? adHistoryCourseName.hashCode() : 0);
+        result = 31 * result + (adHistoryCourseApplyStatus != null ? adHistoryCourseApplyStatus.hashCode() : 0);
+        result = 31 * result + (adHistoryCourseTransdate != null ? adHistoryCourseTransdate.hashCode() : 0);
+        return result;
+    }
+
+    @Basic
+    @Column(name = "ad_course_id", nullable = true, length = 36)
+    public String getAdCourseId() {
+        return adCourseId;
+    }
+
+    public void setAdCourseId(String adCourseId) {
+        this.adCourseId = adCourseId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "ad_course_id", referencedColumnName = "ad_course_id" ,insertable = false,updatable = false)
+    public SysAdmissionCourseEntity getSysAdmissionCourseByAdCourseId() {
+        return sysAdmissionCourseByAdCourseId;
+    }
+
+    public void setSysAdmissionCourseByAdCourseId(SysAdmissionCourseEntity sysAdmissionCourseByAdCourseId) {
+        this.sysAdmissionCourseByAdCourseId = sysAdmissionCourseByAdCourseId;
     }
 }

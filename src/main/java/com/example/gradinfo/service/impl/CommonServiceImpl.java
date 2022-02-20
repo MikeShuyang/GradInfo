@@ -2,7 +2,6 @@ package com.example.gradinfo.service.impl;
 
 import com.example.gradinfo.bo.CourseGradesAndUnits;
 import com.example.gradinfo.bo.StudentGpaAndUnit;
-import com.example.gradinfo.dto.request.TransferCourseRequest;
 import com.example.gradinfo.dto.response.StudentInfoResponse;
 import com.example.gradinfo.entity.SysAdmissionCourseEntity;
 import com.example.gradinfo.entity.SysStudentEntity;
@@ -92,6 +91,12 @@ public class CommonServiceImpl implements CommonService {
             return reason;
         }
 
+        for (int index = 0; index < applySysAdmissionCourseEntityList.size(); index++) { // if grade is NP, remove it
+            if (applySysAdmissionCourseEntityList.get(index).getAdCourseGrade().equals("NP")) {
+                applySysAdmissionCourseEntityList.remove(index);
+            }
+        }
+
         for (SysAdmissionCourseEntity sysAdmissionCourseEntity : applySysAdmissionCourseEntityList) {
             CourseGradesAndUnits courseGradesAndUnits = new CourseGradesAndUnits();
             courseGradesAndUnits.setCourseGrade(sysAdmissionCourseEntity.getAdCourseGrade());
@@ -120,29 +125,41 @@ public class CommonServiceImpl implements CommonService {
 
         StudentGpaAndUnit studentGpaAndUnit = new StudentGpaAndUnit();
 
-        double AppliedGpa = 0.0 ,TotalGpa = 0.0, AppliedUnits = 0.0, TotalUnits = 0.0, RGUnits = 0.0;
+        double AppliedGpa = 0.0 ,TotalGpa = 0.0, AppliedUnits = 0.0, RealAppliedUnits = 0.0, TotalUnits = 0.0, RealTotalUnits = 0.0,  RGUnits = 0.0;
 
         for (SysAdmissionCourseEntity sysAdmissionCourseEntity : sysAdmissionCourseEntityList) {
             TotalGpa += (gpaRules(sysAdmissionCourseEntity.getAdCourseGrade()) * sysAdmissionCourseEntity.getAdCourseUnits());
-            TotalUnits += sysAdmissionCourseEntity.getAdCourseUnits();
+            if (sysAdmissionCourseEntity.getAdCourseGrade().equals("P") || sysAdmissionCourseEntity.getAdCourseGrade().equals("NP") || sysAdmissionCourseEntity.getAdCourseGrade().equals("")) {
+
+            } else {
+                RealTotalUnits += sysAdmissionCourseEntity.getAdCourseUnits();
+                TotalUnits += sysAdmissionCourseEntity.getAdCourseUnits();
+            }
+
         }
 
-
+        System.out.println(RealTotalUnits);
+        System.out.println(TotalUnits);
+        System.out.println("-----------------");
         for (CourseGradesAndUnits CourseGradesAndUnits : studentGpaAndUnitList) {
 
-            if(CourseGradesAndUnits.getCourseGrade().equals("RG")){
+            if(CourseGradesAndUnits.getCourseGrade().equals("")){
                 RGUnits += CourseGradesAndUnits.getUnits();
+//                AppliedUnits += CourseGradesAndUnits.getUnits();
                 continue;
             }
-            AppliedGpa += (gpaRules(CourseGradesAndUnits.getCourseGrade()) * CourseGradesAndUnits.getUnits());
-            AppliedUnits += CourseGradesAndUnits.getUnits();
 
+            if (!CourseGradesAndUnits.getCourseGrade().equals("P")) {
+                AppliedGpa += (gpaRules(CourseGradesAndUnits.getCourseGrade()) * CourseGradesAndUnits.getUnits());
+                AppliedUnits += CourseGradesAndUnits.getUnits();
+            }
+            RealAppliedUnits += CourseGradesAndUnits.getUnits();
         }
 
         System.out.println(AppliedUnits + " " + TotalUnits);
         double SpGpaAll,SpGpaApply;
         if (TotalUnits != 0 && AppliedUnits != 0) {
-            SpGpaAll = new BigDecimal(((TotalGpa / TotalUnits) * 100) / 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            SpGpaAll = new BigDecimal(((TotalGpa / RealTotalUnits) * 100) / 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
             SpGpaApply = new BigDecimal((((AppliedGpa / AppliedUnits) * 100) / 100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         } else {
             SpGpaAll = 0;
@@ -155,7 +172,7 @@ public class CommonServiceImpl implements CommonService {
         studentGpaAndUnit.setSpGpaAll(SpGpaAll);
         studentGpaAndUnit.setSpGpaApply(SpGpaApply);
         studentGpaAndUnit.setSpRgunits(RGUnits);
-        studentGpaAndUnit.setSpEarnunits(AppliedUnits);
+        studentGpaAndUnit.setSpEarnunits(RealAppliedUnits);
 
         sysStudentPostEntity.setSpEarnunits(studentGpaAndUnit.getSpEarnunits());
         sysStudentPostEntity.setSpRgunits(studentGpaAndUnit.getSpRgunits());
@@ -216,6 +233,8 @@ public class CommonServiceImpl implements CommonService {
                 }
             }
         }
+
+
         return reason;
     }
 
@@ -261,6 +280,7 @@ public class CommonServiceImpl implements CommonService {
             case "F":
             case "UW":
             case "IX":
+            case "P":
                 return 0;
         }
         return 0;

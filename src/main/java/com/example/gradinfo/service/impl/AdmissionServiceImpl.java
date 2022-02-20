@@ -15,13 +15,13 @@ import java.util.*;
 @Service
 public class AdmissionServiceImpl implements AdmissionService {
 
-    private AdmissionCourseRepository admissionCourseRepository;
-    private StudentRepository studentRepository;
-    private StudentPostRepository studentPostRepository;
-    private TransferCourseRepository transferCourseRepository;
-    private CommonService commonService;
-    private AdmissionHistoryRepository admissionHistoryRepository;
-    private TransferHistoryRepository transferHistoryRepository;
+    private final AdmissionCourseRepository admissionCourseRepository;
+    private final StudentRepository studentRepository;
+    private final StudentPostRepository studentPostRepository;
+    private final TransferCourseRepository transferCourseRepository;
+    private final CommonService commonService;
+    private final AdmissionHistoryRepository admissionHistoryRepository;
+    private final TransferHistoryRepository transferHistoryRepository;
 
     public AdmissionServiceImpl(AdmissionCourseRepository admissionCourseRepository, StudentRepository studentRepository, StudentPostRepository studentPostRepository, TransferCourseRepository transferCourseRepository, CommonService commonService, AdmissionHistoryRepository admissionHistoryRepository, TransferHistoryRepository transferHistoryRepository) {
         this.admissionCourseRepository = admissionCourseRepository;
@@ -130,8 +130,6 @@ public class AdmissionServiceImpl implements AdmissionService {
         }
         sysAdmissionCourseEntityList = admissionCourseRepository.getSysAdmissionCourseEntitiesByStudentPostId(studentPostId);
         sysTransferCourseEntityList = transferCourseRepository.getSysTransferCourseEntitiesByStudentPostId(studentPostId);
-
-
 
 
         reason = commonService.calculateGpaAndUnit(studentPostId, sysStudentPostEntity, sysAdmissionCourseEntityList, sysTransferCourseEntityList);

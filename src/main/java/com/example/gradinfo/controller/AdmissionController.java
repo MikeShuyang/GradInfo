@@ -19,7 +19,7 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class AdmissionController {
 
-    private AdmissionService admissionService;
+    private final AdmissionService admissionService;
 
     public AdmissionController(AdmissionService admissionService) {
         this.admissionService = admissionService;

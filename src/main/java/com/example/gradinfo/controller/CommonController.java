@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*")
 public class CommonController {
 
-    private CommonService commonService;
+    private final CommonService commonService;
 
     public CommonController(CommonService commonService) {
         this.commonService = commonService;

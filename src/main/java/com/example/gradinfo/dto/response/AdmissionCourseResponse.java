@@ -8,6 +8,7 @@ import java.util.List;
 public class AdmissionCourseResponse {
         private String adCourseId;
         private String adCourseName;
+        private String adCourseNumber;
         private String adCourseTerm;
         private String adCourseGrade;
         private double adCourseUnits;

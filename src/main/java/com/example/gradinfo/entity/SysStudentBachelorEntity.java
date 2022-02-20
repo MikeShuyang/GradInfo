@@ -1,7 +1,6 @@
 package com.example.gradinfo.entity;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "sys_student_bachelor", schema = "GradInfoV3", catalog = "")
@@ -12,9 +11,10 @@ public class SysStudentBachelorEntity {
     private String sbName;
     private String sbDateEarned;
     private String sbDeanOverride;
+    private SysStudentEntity sysStudentByStudentId;
 
     @Id
-    @Column(name = "sb_id")
+    @Column(name = "sb_id", nullable = false)
     public int getSbId() {
         return sbId;
     }
@@ -24,7 +24,7 @@ public class SysStudentBachelorEntity {
     }
 
     @Basic
-    @Column(name = "student_id")
+    @Column(name = "student_id", nullable = true, length = 36)
     public String getStudentId() {
         return studentId;
     }
@@ -34,7 +34,7 @@ public class SysStudentBachelorEntity {
     }
 
     @Basic
-    @Column(name = "sb_ceeb")
+    @Column(name = "sb_ceeb", nullable = true, length = 128)
     public String getSbCeeb() {
         return sbCeeb;
     }
@@ -44,7 +44,7 @@ public class SysStudentBachelorEntity {
     }
 
     @Basic
-    @Column(name = "sb_name")
+    @Column(name = "sb_name", nullable = true, length = 128)
     public String getSbName() {
         return sbName;
     }
@@ -54,7 +54,7 @@ public class SysStudentBachelorEntity {
     }
 
     @Basic
-    @Column(name = "sb_date_earned")
+    @Column(name = "sb_date_earned", nullable = true, length = 20)
     public String getSbDateEarned() {
         return sbDateEarned;
     }
@@ -64,7 +64,7 @@ public class SysStudentBachelorEntity {
     }
 
     @Basic
-    @Column(name = "sb_dean_override")
+    @Column(name = "sb_dean_override", nullable = true, length = 20)
     public String getSbDeanOverride() {
         return sbDeanOverride;
     }
@@ -77,12 +77,38 @@ public class SysStudentBachelorEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         SysStudentBachelorEntity that = (SysStudentBachelorEntity) o;
-        return sbId == that.sbId && Objects.equals(studentId, that.studentId) && Objects.equals(sbCeeb, that.sbCeeb) && Objects.equals(sbName, that.sbName) && Objects.equals(sbDateEarned, that.sbDateEarned) && Objects.equals(sbDeanOverride, that.sbDeanOverride);
+
+        if (sbId != that.sbId) return false;
+        if (studentId != null ? !studentId.equals(that.studentId) : that.studentId != null) return false;
+        if (sbCeeb != null ? !sbCeeb.equals(that.sbCeeb) : that.sbCeeb != null) return false;
+        if (sbName != null ? !sbName.equals(that.sbName) : that.sbName != null) return false;
+        if (sbDateEarned != null ? !sbDateEarned.equals(that.sbDateEarned) : that.sbDateEarned != null) return false;
+        if (sbDeanOverride != null ? !sbDeanOverride.equals(that.sbDeanOverride) : that.sbDeanOverride != null)
+            return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sbId, studentId, sbCeeb, sbName, sbDateEarned, sbDeanOverride);
+        int result = sbId;
+        result = 31 * result + (studentId != null ? studentId.hashCode() : 0);
+        result = 31 * result + (sbCeeb != null ? sbCeeb.hashCode() : 0);
+        result = 31 * result + (sbName != null ? sbName.hashCode() : 0);
+        result = 31 * result + (sbDateEarned != null ? sbDateEarned.hashCode() : 0);
+        result = 31 * result + (sbDeanOverride != null ? sbDeanOverride.hashCode() : 0);
+        return result;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "student_id", referencedColumnName = "student_id" ,insertable = false,updatable = false)
+    public SysStudentEntity getSysStudentByStudentId() {
+        return sysStudentByStudentId;
+    }
+
+    public void setSysStudentByStudentId(SysStudentEntity sysStudentByStudentId) {
+        this.sysStudentByStudentId = sysStudentByStudentId;
     }
 }

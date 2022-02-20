@@ -7,6 +7,7 @@ import java.util.List;
 public class TransferCourseResponse {
     private String trCourseId;
     private String trCourseName;
+    private String trCourseNumber;
     private String trCourseTerm;
     private String trCourseGrade;
     private double trCourseUnits;
