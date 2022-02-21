@@ -13,13 +13,11 @@ import com.example.gradinfo.entity.SysTransferHistoryEntity;
 import com.example.gradinfo.repository.*;
 import com.example.gradinfo.service.CommonService;
 import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -119,12 +117,23 @@ class TransferServiceImplTest {
 
     @Nested
     @DisplayName("Tests for postTransferCourseTableDataByNewArr")
+    @RunWith(MockitoJUnitRunner.class)
+    @Disabled("Not implemented yet")
     class PostTransferCourseTableDataByNewArrTest {
         private final UserInfo userInfo = new UserInfo();
         private final StudentInfo studentInfo = new StudentInfo();
         private final Course course = new Course();
         private final TransferCourseRequest transferCourseRequest = new TransferCourseRequest();
         private final List<Course> courseList = new ArrayList<>();
+
+        @Mock
+        TransferHistoryRepository mockTransferHistoryRepository;
+
+        @Mock
+        TransferCourseRepository mockTransferCourseRepository;
+
+        @Mock
+        CommonService mockCommonService;
 
         @InjectMocks
         TransferServiceImpl mockTransferService = new TransferServiceImpl(
@@ -136,15 +145,6 @@ class TransferServiceImplTest {
                 admissionCourseRepository,
                 studentPostRepository
         );
-
-        @Mock
-        TransferHistoryRepository mockTransferHistoryRepository;
-
-        @Mock
-        TransferCourseRepository mockTransferCourseRepository;
-
-        @Mock
-        CommonService mockCommonService;
 
         @BeforeEach
         void setUp() {
@@ -170,7 +170,6 @@ class TransferServiceImplTest {
         }
 
         @Test
-        @Ignore
         void fail() {
         }
     }

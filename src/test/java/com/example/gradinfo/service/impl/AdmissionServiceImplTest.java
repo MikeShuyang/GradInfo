@@ -12,10 +12,11 @@ import com.example.gradinfo.entity.SysAdmissionCourseEntity;
 import com.example.gradinfo.entity.SysStudentPostEntity;
 import com.example.gradinfo.repository.*;
 import com.example.gradinfo.service.CommonService;
-import org.junit.Ignore;
 import org.junit.jupiter.api.*;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -101,6 +102,8 @@ class AdmissionServiceImplTest {
 
     @Nested
     @DisplayName("Tests for getPostAdmissionCourseTableDataByNewArr")
+    @RunWith(MockitoJUnitRunner.class)
+    @Disabled("Not implemented yet")
     class GetPostAdmissionCourseTableDataByNewArrTest {
         private final UserInfo userInfo = new UserInfo();
         private final StudentInfo studentInfo = new StudentInfo();
@@ -154,9 +157,8 @@ class AdmissionServiceImplTest {
         }
 
         @Test
-        @Ignore
         void failed() {
-
+            System.out.println("asdasd");
         }
     }
 }
