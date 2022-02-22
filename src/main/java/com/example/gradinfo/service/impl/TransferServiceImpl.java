@@ -1,8 +1,5 @@
 package com.example.gradinfo.service.impl;
 
-import com.example.gradinfo.bo.CourseGradesAndUnits;
-import com.example.gradinfo.bo.StudentGpaAndUnit;
-import com.example.gradinfo.dto.request.AdmissionCourseRequest;
 import com.example.gradinfo.dto.request.Course;
 import com.example.gradinfo.dto.request.TransferCourseRequest;
 import com.example.gradinfo.dto.response.*;

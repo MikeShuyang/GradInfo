@@ -2,15 +2,21 @@ package com.example.gradinfo.service.impl;
 
 import com.example.gradinfo.dto.request.AdmissionCourseRequest;
 import com.example.gradinfo.dto.request.Course;
-import com.example.gradinfo.dto.response.*;
+import com.example.gradinfo.dto.response.AdmissionCourseApplyResponse;
+import com.example.gradinfo.dto.response.AdmissionCourseHistory;
+import com.example.gradinfo.dto.response.AdmissionCourseResponse;
+import com.example.gradinfo.dto.response.StudentPostResponse;
 import com.example.gradinfo.entity.*;
+import com.example.gradinfo.mapper.CommonMapper;
 import com.example.gradinfo.repository.*;
 import com.example.gradinfo.service.AdmissionService;
 import com.example.gradinfo.service.CommonService;
-import com.example.gradinfo.mapper.CommonMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class AdmissionServiceImpl implements AdmissionService {
@@ -36,8 +42,8 @@ public class AdmissionServiceImpl implements AdmissionService {
 
     @Override
     public StudentPostResponse getStudentPostDataByStudentIDAndPostNumber(String studentId, String spPostNumber) {
-        StudentPostResponse studentPostDto = new StudentPostResponse();
-        SysStudentEntity sysStudentEntity = studentRepository.findSysStudentEntityBystudentId(studentId);
+        // StudentPostResponse studentPostDto = new StudentPostResponse();
+        // SysStudentEntity sysStudentEntity = studentRepository.findSysStudentEntityBystudentId(studentId);
         SysStudentPostEntity sysStudentPostEntity = commonService.getStudentPostEntitiesByStudentIdAndSpPostNumber(studentId, spPostNumber);
 
         return CommonMapper.convertToDto(sysStudentPostEntity, StudentPostResponse.class);

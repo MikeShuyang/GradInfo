@@ -1,7 +1,10 @@
 package com.example.gradinfo.service;
 
 import com.example.gradinfo.dto.request.TransferCourseRequest;
-import com.example.gradinfo.dto.response.*;
+import com.example.gradinfo.dto.response.BachelorDegreeResponse;
+import com.example.gradinfo.dto.response.TransferCourseApplyResponse;
+import com.example.gradinfo.dto.response.TransferCourseResponse;
+import com.example.gradinfo.dto.response.TransferInstitution;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

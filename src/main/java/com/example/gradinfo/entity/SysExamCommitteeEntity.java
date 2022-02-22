@@ -1,14 +1,13 @@
 package com.example.gradinfo.entity;
 
 import javax.persistence.*;
-
 @Entity
 @Table(name = "sys_exam_committee", schema = "GradInfoV3", catalog = "")
 public class SysExamCommitteeEntity {
     private int ecId;
     private String studentPostId;
     private String examCommitteeName;
-    private String examComitteeChar;
+    private String examCommitteeChar;
     private SysStudentPostEntity sysStudentPostByStudentPostId;
 
     @Id
@@ -42,13 +41,13 @@ public class SysExamCommitteeEntity {
     }
 
     @Basic
-    @Column(name = "exam_comittee_char", nullable = true, length = 128)
-    public String getExamComitteeChar() {
-        return examComitteeChar;
+    @Column(name = "exam_committee_char", nullable = true, length = 128)
+    public String getExamCommitteeChar() {
+        return examCommitteeChar;
     }
 
-    public void setExamComitteeChar(String examComitteeChar) {
-        this.examComitteeChar = examComitteeChar;
+    public void setExamCommitteeChar(String examCommitteeChar) {
+        this.examCommitteeChar = examCommitteeChar;
     }
 
     @Override
@@ -63,7 +62,7 @@ public class SysExamCommitteeEntity {
             return false;
         if (examCommitteeName != null ? !examCommitteeName.equals(that.examCommitteeName) : that.examCommitteeName != null)
             return false;
-        if (examComitteeChar != null ? !examComitteeChar.equals(that.examComitteeChar) : that.examComitteeChar != null)
+        if (examCommitteeChar != null ? !examCommitteeChar.equals(that.examCommitteeChar) : that.examCommitteeChar != null)
             return false;
 
         return true;
@@ -74,7 +73,7 @@ public class SysExamCommitteeEntity {
         int result = ecId;
         result = 31 * result + (studentPostId != null ? studentPostId.hashCode() : 0);
         result = 31 * result + (examCommitteeName != null ? examCommitteeName.hashCode() : 0);
-        result = 31 * result + (examComitteeChar != null ? examComitteeChar.hashCode() : 0);
+        result = 31 * result + (examCommitteeChar != null ? examCommitteeChar.hashCode() : 0);
         return result;
     }
 

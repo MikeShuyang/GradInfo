@@ -1,6 +1,5 @@
 package com.example.gradinfo.repository;
 
-import com.example.gradinfo.entity.SysExamCommitteeEntity;
 import com.example.gradinfo.entity.SysNonCourseRelatedEventRecordEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ExamCommitteeRepository extends JpaRepository<SysExamCommitteeEntity,Long> {
+public interface ExamCommitteeRepository extends JpaRepository<SysExamCommitteeEntity,String> {
     List<SysExamCommitteeEntity> getSysExamCommitteeEntitiesByStudentPostId(String studentPostId);
 }
