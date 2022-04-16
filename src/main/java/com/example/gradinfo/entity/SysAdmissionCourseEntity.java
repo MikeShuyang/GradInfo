@@ -198,7 +198,7 @@ public class SysAdmissionCourseEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "student_post_id", referencedColumnName = "student_post_id" ,insertable = false,updatable = false)
+    @JoinColumn(name = "student_post_id", referencedColumnName = "student_post_id", insertable = false, updatable = false)
     public SysStudentPostEntity getSysStudentPostByStudentPostId() {
         return sysStudentPostByStudentPostId;
     }

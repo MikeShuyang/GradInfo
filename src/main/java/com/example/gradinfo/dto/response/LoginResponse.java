@@ -10,4 +10,6 @@ public class LoginResponse {
     private String userPassword;
     private String userOper;
     private String userLocked;
+    private String userEventAccessLevel;
+    private String userSuper;
 }

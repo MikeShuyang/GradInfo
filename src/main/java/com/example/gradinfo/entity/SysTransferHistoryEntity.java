@@ -14,6 +14,7 @@ public class SysTransferHistoryEntity {
     private SysTransferCourseEntity sysTransferCourseByTrCourseId;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "tr_history_id", nullable = false)
     public int getTrHistoryId() {
         return trHistoryId;
@@ -106,7 +107,7 @@ public class SysTransferHistoryEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "tr_course_id", referencedColumnName = "tr_course_id" ,insertable = false,updatable = false)
+    @JoinColumn(name = "tr_course_id", referencedColumnName = "tr_course_id", insertable = false, updatable = false)
     public SysTransferCourseEntity getSysTransferCourseByTrCourseId() {
         return sysTransferCourseByTrCourseId;
     }

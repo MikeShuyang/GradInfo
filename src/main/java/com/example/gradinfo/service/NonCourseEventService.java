@@ -2,6 +2,7 @@ package com.example.gradinfo.service;
 
 import com.example.gradinfo.dto.request.ExamCommitteeRequest;
 import com.example.gradinfo.dto.request.NonCourseEventRequest;
+import com.example.gradinfo.dto.request.PaperTitleRequest;
 import com.example.gradinfo.dto.request.ThesisCommitteeRequest;
 import com.example.gradinfo.dto.response.*;
 import org.springframework.stereotype.Service;
@@ -16,4 +17,6 @@ public interface NonCourseEventService {
     NonCourseEventApplyResponse postNonCourseRelatedEventTableDataByEventObj(NonCourseEventRequest nonCourseEventRequest);
     CommonResponse postExamCommitteeTableDataByCommitteeObj(ExamCommitteeRequest examCommitteeRequest);
     CommonResponse postThesisCommitteeTableDataByCommitteeObj(ThesisCommitteeRequest thesisCommitteeRequest);
+
+    CommonResponse postPaperTitleByPaperTitleObj(PaperTitleRequest paperTitleRequest);
 }

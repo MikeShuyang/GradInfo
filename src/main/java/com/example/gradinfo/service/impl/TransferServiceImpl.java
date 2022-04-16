@@ -109,62 +109,76 @@ public class TransferServiceImpl implements TransferService {
         List<SysTransferCourseEntity> sysTransferCourseEntityListForReason = transferCourseRepository.getSysTransferCourseEntitiesByStudentPostIdAndTrCourseIdIsIn(studentPostId, list);
         List<String> reason = commonService.checkReason(sysAdmissionCourseEntityListForReason, sysTransferCourseEntityListForReason);
 
-        if (reason.size() != 0) {
-            transferCourseApplyResponse.setFlag(false);
-            transferCourseApplyResponse.setReasonList(reason);
-            return transferCourseApplyResponse;
-        }
+        try {
+            if (reason.size() != 0) {
+                transferCourseApplyResponse.setFlag(false);
+                transferCourseApplyResponse.setReasonList(reason);
+                return transferCourseApplyResponse;
+            }
 
-        transferCourseApplyResponse.setFlag(true);
-        Map<String, Course> map = new HashMap<>();
+            transferCourseApplyResponse.setFlag(true);
+            Map<String, Course> map = new HashMap<>();
 
-        for (int index = 0; index < transferCourseRequest.getCourseList().size(); index++) {
-            map.put(transferCourseRequest.getCourseList().get(index).getCourseId(), transferCourseRequest.getCourseList().get(index));
-        }
+            for (int index = 0; index < transferCourseRequest.getCourseList().size(); index++) {
+                map.put(transferCourseRequest.getCourseList().get(index).getCourseId(), transferCourseRequest.getCourseList().get(index));
+            }
 
-        for (SysTransferCourseEntity sysTransferCourseEntity : sysTransferCourseEntityList) {
-            String courseId = sysTransferCourseEntity.getTrCourseId();
-            SysTransferHistoryEntity sysTransferHistoryEntity = new SysTransferHistoryEntity();
+            List<SysTransferHistoryEntity> sysTransferHistoryEntityList = new ArrayList<>();
+            List<SysTransferCourseEntity> sysTransferCourseEntityArrayList = new ArrayList<>();
+            for (SysTransferCourseEntity sysTransferCourseEntity : sysTransferCourseEntityList) {
+                String courseId = sysTransferCourseEntity.getTrCourseId();
+                SysTransferHistoryEntity sysTransferHistoryEntity = new SysTransferHistoryEntity();
 
-            if (map.containsKey(courseId)) {
-                if (sysTransferCourseEntity.getTrCourseApplyStatus() == 0) {
-                    sysTransferHistoryEntity.setTrCourseId(courseId);
-                    sysTransferHistoryEntity.setTrHistoryCourseName(sysTransferCourseEntity.getTrCourseName());
-                    sysTransferHistoryEntity.setTrHistoryCourseOper(transferCourseRequest.getUserInfo().getUserOper());
-                    sysTransferHistoryEntity.setTrHistoryCourseApplyStatus(Byte.valueOf("1"));
-                    sysTransferHistoryEntity.setTrHistoryCourseTransdate(transferCourseRequest.getUserInfo().getTransDate());
-                    transferHistoryRepository.save(sysTransferHistoryEntity);
-                }
-                sysTransferCourseEntity.setTrCourseApplyStatus(Byte.valueOf("1"));
-                sysTransferCourseEntity.setTrCourseTransdate(transferCourseRequest.getUserInfo().getTransDate());
-                sysTransferCourseEntity.setTrCourseOper(transferCourseRequest.getUserInfo().getUserOper());
 
-            } else {
-                if (sysTransferCourseEntity.getTrCourseApplyStatus() != 0) {
+                if (map.containsKey(courseId)) {
+                    if (sysTransferCourseEntity.getTrCourseApplyStatus() == 0) {
+                        sysTransferHistoryEntity.setTrCourseId(courseId);
+                        sysTransferHistoryEntity.setTrHistoryCourseName(sysTransferCourseEntity.getTrCourseName());
+                        sysTransferHistoryEntity.setTrHistoryCourseOper(transferCourseRequest.getUserInfo().getUserOper());
+                        sysTransferHistoryEntity.setTrHistoryCourseApplyStatus(Byte.valueOf("1"));
+                        sysTransferHistoryEntity.setTrHistoryCourseTransdate(transferCourseRequest.getUserInfo().getTransDate());
+                        sysTransferHistoryEntityList.add(sysTransferHistoryEntity);
+                    }
+                    sysTransferCourseEntity.setTrCourseApplyStatus(Byte.valueOf("1"));
                     sysTransferCourseEntity.setTrCourseTransdate(transferCourseRequest.getUserInfo().getTransDate());
                     sysTransferCourseEntity.setTrCourseOper(transferCourseRequest.getUserInfo().getUserOper());
-                    sysTransferCourseEntity.setTrCourseApplyStatus(Byte.valueOf("0"));
-                    sysTransferHistoryEntity.setTrCourseId(courseId);
-                    sysTransferHistoryEntity.setTrHistoryCourseName(sysTransferCourseEntity.getTrCourseName());
-                    sysTransferHistoryEntity.setTrHistoryCourseOper(transferCourseRequest.getUserInfo().getUserOper());
-                    sysTransferHistoryEntity.setTrHistoryCourseApplyStatus(Byte.valueOf("0"));
-                    sysTransferHistoryEntity.setTrHistoryCourseTransdate(transferCourseRequest.getUserInfo().getTransDate());
-                    transferHistoryRepository.save(sysTransferHistoryEntity);
+
+                } else {
+                    if (sysTransferCourseEntity.getTrCourseApplyStatus() != 0) {
+                        sysTransferCourseEntity.setTrCourseTransdate(transferCourseRequest.getUserInfo().getTransDate());
+                        sysTransferCourseEntity.setTrCourseOper(transferCourseRequest.getUserInfo().getUserOper());
+                        sysTransferCourseEntity.setTrCourseApplyStatus(Byte.valueOf("0"));
+                        sysTransferHistoryEntity.setTrCourseId(courseId);
+                        sysTransferHistoryEntity.setTrHistoryCourseName(sysTransferCourseEntity.getTrCourseName());
+                        sysTransferHistoryEntity.setTrHistoryCourseOper(transferCourseRequest.getUserInfo().getUserOper());
+                        sysTransferHistoryEntity.setTrHistoryCourseApplyStatus(Byte.valueOf("0"));
+                        sysTransferHistoryEntity.setTrHistoryCourseTransdate(transferCourseRequest.getUserInfo().getTransDate());
+                        sysTransferHistoryEntityList.add(sysTransferHistoryEntity);
+
+                    }
                 }
+                sysTransferCourseEntityArrayList.add(sysTransferCourseEntity);
+
             }
-            transferCourseRepository.save(sysTransferCourseEntity);
-        }
-        sysAdmissionCourseEntityList = admissionCourseRepository.getSysAdmissionCourseEntitiesByStudentPostId(studentPostId);
-        sysTransferCourseEntityList = transferCourseRepository.getSysTransferCourseEntitiesByStudentPostId(studentPostId);
+            transferHistoryRepository.saveAllAndFlush(sysTransferHistoryEntityList);
+            transferCourseRepository.saveAllAndFlush(sysTransferCourseEntityArrayList);
+
+            sysAdmissionCourseEntityList = admissionCourseRepository.getSysAdmissionCourseEntitiesByStudentPostId(studentPostId);
+            sysTransferCourseEntityList = transferCourseRepository.getSysTransferCourseEntitiesByStudentPostId(studentPostId);
 
 
-        reason = commonService.calculateGpaAndUnit(studentPostId, sysStudentPostEntity, sysAdmissionCourseEntityList, sysTransferCourseEntityList);
+            reason = commonService.calculateGpaAndUnit(studentPostId, sysStudentPostEntity, sysAdmissionCourseEntityList, sysTransferCourseEntityList);
 
-        transferCourseApplyResponse.setReasonList(reason);
-        if (reason.size() != 0) {
+            transferCourseApplyResponse.setReasonList(reason);
+            if (reason.size() != 0) {
+                transferCourseApplyResponse.setFlag(false);
+                return transferCourseApplyResponse;
+            }
+        } catch (Exception e) {
             transferCourseApplyResponse.setFlag(false);
             return transferCourseApplyResponse;
         }
+
 
         return transferCourseApplyResponse;
     }

@@ -134,7 +134,7 @@ public class SysDegreeCheckEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "student_post_id", referencedColumnName = "student_post_id", nullable = false,insertable = false,updatable = false)
+    @JoinColumn(name = "student_post_id", referencedColumnName = "student_post_id", nullable = false, insertable = false, updatable = false)
     public SysStudentPostEntity getSysStudentPostByStudentPostId() {
         return sysStudentPostByStudentPostId;
     }

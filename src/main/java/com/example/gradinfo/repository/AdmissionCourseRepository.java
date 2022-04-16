@@ -8,6 +8,7 @@ import java.util.List;
 
 @Repository
 public interface AdmissionCourseRepository extends JpaRepository<SysAdmissionCourseEntity,Long> {
+
     List<SysAdmissionCourseEntity> getSysAdmissionCourseEntitiesByStudentPostId(String studentPostId);
     List<SysAdmissionCourseEntity> getSysAdmissionCourseEntitiesByStudentPostIdAndAdCourseApplyStatusIs(String studentPostId, byte num);
     boolean findSysAdmissionCourseEntityByStudentPostIdAndAdCourseApplyStatusIs(String studentPostId, byte num);

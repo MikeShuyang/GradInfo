@@ -21,6 +21,7 @@ public class SysStudentPostEntity {
     private Double spGpaApply;
     private Double spGpaAll;
     private Integer spCreditLimits;
+    private String spThesisTitle;
     private Collection<SysAdmissionCourseEntity> sysAdmissionCoursesByStudentPostId;
     private Collection<SysCommentEntity> sysCommentsByStudentPostId;
     private Collection<SysDegreeCheckEntity> sysDegreeChecksByStudentPostId;
@@ -181,6 +182,16 @@ public class SysStudentPostEntity {
         this.spCreditLimits = spCreditLimits;
     }
 
+    @Basic
+    @Column(name = "sp_thesis_title", nullable = true, length = 512)
+    public String getSpThesisTitle() {
+        return spThesisTitle;
+    }
+
+    public void setSpThesisTitle(String spThesisTitle) {
+        this.spThesisTitle = spThesisTitle;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -205,6 +216,8 @@ public class SysStudentPostEntity {
         if (spGpaAll != null ? !spGpaAll.equals(that.spGpaAll) : that.spGpaAll != null) return false;
         if (spCreditLimits != null ? !spCreditLimits.equals(that.spCreditLimits) : that.spCreditLimits != null)
             return false;
+        if (spThesisTitle != null ? !spThesisTitle.equals(that.spThesisTitle) : that.spThesisTitle != null)
+            return false;
 
         return true;
     }
@@ -226,6 +239,7 @@ public class SysStudentPostEntity {
         result = 31 * result + (spGpaApply != null ? spGpaApply.hashCode() : 0);
         result = 31 * result + (spGpaAll != null ? spGpaAll.hashCode() : 0);
         result = 31 * result + (spCreditLimits != null ? spCreditLimits.hashCode() : 0);
+        result = 31 * result + (spThesisTitle != null ? spThesisTitle.hashCode() : 0);
         return result;
     }
 
@@ -284,7 +298,7 @@ public class SysStudentPostEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "student_id", referencedColumnName = "student_id" ,insertable = false,updatable = false)
+    @JoinColumn(name = "student_id", referencedColumnName = "student_id", insertable = false, updatable = false)
     public SysStudentEntity getSysStudentByStudentId() {
         return sysStudentByStudentId;
     }

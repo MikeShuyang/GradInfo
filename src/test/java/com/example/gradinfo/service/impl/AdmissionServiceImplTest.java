@@ -1,4 +1,4 @@
-package com.example.gradinfo.service.impl;
+package com.example.gradinfo.impl;
 
 import com.example.gradinfo.dto.request.AdmissionCourseRequest;
 import com.example.gradinfo.dto.request.Course;
@@ -7,10 +7,19 @@ import com.example.gradinfo.dto.request.UserInfo;
 import com.example.gradinfo.dto.response.AdmissionCourseApplyResponse;
 import com.example.gradinfo.dto.response.AdmissionCourseResponse;
 import com.example.gradinfo.dto.response.StudentPostResponse;
-import com.example.gradinfo.entity.*;
-import com.example.gradinfo.repository.*;
+import com.example.gradinfo.entity.SysAdmissionCourseEntity;
+import com.example.gradinfo.entity.SysStudentEntity;
+import com.example.gradinfo.entity.SysStudentPostEntity;
+import com.example.gradinfo.repository.AdmissionCourseRepository;
+import com.example.gradinfo.repository.AdmissionHistoryRepository;
+import com.example.gradinfo.repository.StudentRepository;
+import com.example.gradinfo.repository.TransferCourseRepository;
 import com.example.gradinfo.service.CommonService;
-import org.junit.jupiter.api.*;
+import com.example.gradinfo.service.impl.AdmissionServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -27,12 +36,14 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class AdmissionServiceImplTest {
 
+    @Mock private StudentRepository studentRepository;
     @Mock private AdmissionCourseRepository admissionCourseRepository;
     @Mock private AdmissionHistoryRepository admissionHistoryRepository;
     @Mock private TransferCourseRepository transferCourseRepository;
     @Mock private CommonService commonService;
 
-    @InjectMocks AdmissionServiceImpl admissionService;
+    @InjectMocks
+    AdmissionServiceImpl admissionService;
 
     @Nested
     @DisplayName("Tests for getStudentPostDataByStudentIDAndPostNumber")
@@ -53,6 +64,7 @@ class AdmissionServiceImplTest {
             @Test
             void correctStudentIDAndPostNumber() {
                 // Arrange
+                when(studentRepository.findSysStudentEntityBystudentId(any())).thenReturn(new SysStudentEntity());
                 when(commonService.getStudentPostEntitiesByStudentIdAndSpPostNumber(
                         "0000001", "654"))
                         .thenReturn(sysStudentPostEntity);
@@ -77,6 +89,7 @@ class AdmissionServiceImplTest {
             @Test
             void wrongStudentIDAndPostNumber() {
                 // Arrange
+                when(studentRepository.findSysStudentEntityBystudentId(any())).thenReturn(new SysStudentEntity());
                 when(commonService.getStudentPostEntitiesByStudentIdAndSpPostNumber(
                         "aaa", "aaa"))
                         .thenReturn(sysStudentPostEntity);
@@ -194,7 +207,7 @@ class AdmissionServiceImplTest {
                         .thenReturn(sysStudentPostEntity);
 
                 when(admissionCourseRepository.getSysAdmissionCourseEntitiesByStudentPostId(
-                        "0000000001"))
+                        any()))
                         .thenReturn(sysAdmissionCourseEntityList);
 
                 when(admissionCourseRepository.getSysAdmissionCourseEntitiesByStudentPostIdAndAdCourseIdIsIn(
@@ -209,9 +222,17 @@ class AdmissionServiceImplTest {
                         any(),any()))
                         .thenReturn(new ArrayList<>());
 
-                when(admissionCourseRepository.save(
-                        any(SysAdmissionCourseEntity.class)))
-                        .thenReturn(new SysAdmissionCourseEntity());
+                when(admissionCourseRepository.saveAllAndFlush(
+                        any()))
+                        .thenReturn(new ArrayList<>());
+
+                when(admissionHistoryRepository.saveAllAndFlush(
+                        any()))
+                        .thenReturn(new ArrayList<>());
+
+                when(admissionCourseRepository.getSysAdmissionCourseEntitiesByStudentPostId(
+                        any()))
+                        .thenReturn(new ArrayList<>());
 
                 when(transferCourseRepository.getSysTransferCourseEntitiesByStudentPostId(
                         any()))

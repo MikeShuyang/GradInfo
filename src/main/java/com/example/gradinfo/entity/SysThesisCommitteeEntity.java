@@ -9,7 +9,6 @@ public class SysThesisCommitteeEntity {
     private String studentPostId;
     private String thesisCommitteeName;
     private String thesisCommitteeChar;
-    private String thesisCommitteeTitle;
     private SysStudentPostEntity sysStudentPostByStudentPostId;
 
     @Id
@@ -52,16 +51,6 @@ public class SysThesisCommitteeEntity {
         this.thesisCommitteeChar = thesisCommitteeChar;
     }
 
-    @Basic
-    @Column(name = "thesis_committee_title", nullable = true, length = 128)
-    public String getThesisCommitteeTitle() {
-        return thesisCommitteeTitle;
-    }
-
-    public void setThesisCommitteeTitle(String thesisCommitteeTitle) {
-        this.thesisCommitteeTitle = thesisCommitteeTitle;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -76,8 +65,6 @@ public class SysThesisCommitteeEntity {
             return false;
         if (thesisCommitteeChar != null ? !thesisCommitteeChar.equals(that.thesisCommitteeChar) : that.thesisCommitteeChar != null)
             return false;
-        if (thesisCommitteeTitle != null ? !thesisCommitteeTitle.equals(that.thesisCommitteeTitle) : that.thesisCommitteeTitle != null)
-            return false;
 
         return true;
     }
@@ -88,12 +75,11 @@ public class SysThesisCommitteeEntity {
         result = 31 * result + (studentPostId != null ? studentPostId.hashCode() : 0);
         result = 31 * result + (thesisCommitteeName != null ? thesisCommitteeName.hashCode() : 0);
         result = 31 * result + (thesisCommitteeChar != null ? thesisCommitteeChar.hashCode() : 0);
-        result = 31 * result + (thesisCommitteeTitle != null ? thesisCommitteeTitle.hashCode() : 0);
         return result;
     }
 
     @ManyToOne
-    @JoinColumn(name = "student_post_id", referencedColumnName = "student_post_id",insertable = false,updatable = false)
+    @JoinColumn(name = "student_post_id", referencedColumnName = "student_post_id", insertable = false, updatable = false)
     public SysStudentPostEntity getSysStudentPostByStudentPostId() {
         return sysStudentPostByStudentPostId;
     }

@@ -18,6 +18,8 @@ public class SysStarsExceptionEntity {
     private String starsOper;
     private String starsTransdate;
     private String starsResponseMessage;
+    private String starsCourse;
+    private String starsRcourse;
     private SysStudentPostEntity sysStudentPostByStudentPostId;
 
     @Id
@@ -150,6 +152,26 @@ public class SysStarsExceptionEntity {
         this.starsResponseMessage = starsResponseMessage;
     }
 
+    @Basic
+    @Column(name = "stars_course", nullable = true, length = 45)
+    public String getStarsCourse() {
+        return starsCourse;
+    }
+
+    public void setStarsCourse(String starsCourse) {
+        this.starsCourse = starsCourse;
+    }
+
+    @Basic
+    @Column(name = "stars_rcourse", nullable = true, length = 45)
+    public String getStarsRcourse() {
+        return starsRcourse;
+    }
+
+    public void setStarsRcourse(String starsRcourse) {
+        this.starsRcourse = starsRcourse;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -173,6 +195,8 @@ public class SysStarsExceptionEntity {
             return false;
         if (starsResponseMessage != null ? !starsResponseMessage.equals(that.starsResponseMessage) : that.starsResponseMessage != null)
             return false;
+        if (starsCourse != null ? !starsCourse.equals(that.starsCourse) : that.starsCourse != null) return false;
+        if (starsRcourse != null ? !starsRcourse.equals(that.starsRcourse) : that.starsRcourse != null) return false;
 
         return true;
     }
@@ -192,11 +216,13 @@ public class SysStarsExceptionEntity {
         result = 31 * result + (starsOper != null ? starsOper.hashCode() : 0);
         result = 31 * result + (starsTransdate != null ? starsTransdate.hashCode() : 0);
         result = 31 * result + (starsResponseMessage != null ? starsResponseMessage.hashCode() : 0);
+        result = 31 * result + (starsCourse != null ? starsCourse.hashCode() : 0);
+        result = 31 * result + (starsRcourse != null ? starsRcourse.hashCode() : 0);
         return result;
     }
 
     @ManyToOne
-    @JoinColumn(name = "student_post_id", referencedColumnName = "student_post_id" ,insertable = false,updatable = false)
+    @JoinColumn(name = "student_post_id", referencedColumnName = "student_post_id", insertable = false, updatable = false)
     public SysStudentPostEntity getSysStudentPostByStudentPostId() {
         return sysStudentPostByStudentPostId;
     }

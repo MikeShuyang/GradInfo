@@ -1,12 +1,14 @@
 package com.example.gradinfo.entity;
 
 import javax.persistence.*;
+
 @Entity
 @Table(name = "sys_exam_committee", schema = "GradInfoV3", catalog = "")
 public class SysExamCommitteeEntity {
     private int ecId;
     private String studentPostId;
     private String examCommitteeName;
+    private String examComitteeChar;
     private String examCommitteeChar;
     private SysStudentPostEntity sysStudentPostByStudentPostId;
 
@@ -41,6 +43,16 @@ public class SysExamCommitteeEntity {
     }
 
     @Basic
+    @Column(name = "exam_comittee_char", nullable = true, length = 128)
+    public String getExamComitteeChar() {
+        return examComitteeChar;
+    }
+
+    public void setExamComitteeChar(String examComitteeChar) {
+        this.examComitteeChar = examComitteeChar;
+    }
+
+    @Basic
     @Column(name = "exam_committee_char", nullable = true, length = 128)
     public String getExamCommitteeChar() {
         return examCommitteeChar;
@@ -62,6 +74,8 @@ public class SysExamCommitteeEntity {
             return false;
         if (examCommitteeName != null ? !examCommitteeName.equals(that.examCommitteeName) : that.examCommitteeName != null)
             return false;
+        if (examComitteeChar != null ? !examComitteeChar.equals(that.examComitteeChar) : that.examComitteeChar != null)
+            return false;
         if (examCommitteeChar != null ? !examCommitteeChar.equals(that.examCommitteeChar) : that.examCommitteeChar != null)
             return false;
 
@@ -73,12 +87,13 @@ public class SysExamCommitteeEntity {
         int result = ecId;
         result = 31 * result + (studentPostId != null ? studentPostId.hashCode() : 0);
         result = 31 * result + (examCommitteeName != null ? examCommitteeName.hashCode() : 0);
+        result = 31 * result + (examComitteeChar != null ? examComitteeChar.hashCode() : 0);
         result = 31 * result + (examCommitteeChar != null ? examCommitteeChar.hashCode() : 0);
         return result;
     }
 
     @ManyToOne
-    @JoinColumn(name = "student_post_id", referencedColumnName = "student_post_id" ,insertable = false,updatable = false)
+    @JoinColumn(name = "student_post_id", referencedColumnName = "student_post_id", insertable = false, updatable = false)
     public SysStudentPostEntity getSysStudentPostByStudentPostId() {
         return sysStudentPostByStudentPostId;
     }

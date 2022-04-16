@@ -6,14 +6,15 @@ import javax.persistence.*;
 @Table(name = "sys_ad_history", schema = "GradInfoV3", catalog = "")
 public class SysAdHistoryEntity {
     private int adHistoryId;
+    private String adCourseId;
     private String adHistoryCourseOper;
     private String adHistoryCourseName;
     private Byte adHistoryCourseApplyStatus;
     private String adHistoryCourseTransdate;
-    private String adCourseId;
     private SysAdmissionCourseEntity sysAdmissionCourseByAdCourseId;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ad_history_id", nullable = false)
     public int getAdHistoryId() {
         return adHistoryId;
@@ -21,6 +22,16 @@ public class SysAdHistoryEntity {
 
     public void setAdHistoryId(int adHistoryId) {
         this.adHistoryId = adHistoryId;
+    }
+
+    @Basic
+    @Column(name = "ad_course_id", nullable = true, length = 36)
+    public String getAdCourseId() {
+        return adCourseId;
+    }
+
+    public void setAdCourseId(String adCourseId) {
+        this.adCourseId = adCourseId;
     }
 
     @Basic
@@ -71,6 +82,7 @@ public class SysAdHistoryEntity {
         SysAdHistoryEntity that = (SysAdHistoryEntity) o;
 
         if (adHistoryId != that.adHistoryId) return false;
+        if (adCourseId != null ? !adCourseId.equals(that.adCourseId) : that.adCourseId != null) return false;
         if (adHistoryCourseOper != null ? !adHistoryCourseOper.equals(that.adHistoryCourseOper) : that.adHistoryCourseOper != null)
             return false;
         if (adHistoryCourseName != null ? !adHistoryCourseName.equals(that.adHistoryCourseName) : that.adHistoryCourseName != null)
@@ -86,6 +98,7 @@ public class SysAdHistoryEntity {
     @Override
     public int hashCode() {
         int result = adHistoryId;
+        result = 31 * result + (adCourseId != null ? adCourseId.hashCode() : 0);
         result = 31 * result + (adHistoryCourseOper != null ? adHistoryCourseOper.hashCode() : 0);
         result = 31 * result + (adHistoryCourseName != null ? adHistoryCourseName.hashCode() : 0);
         result = 31 * result + (adHistoryCourseApplyStatus != null ? adHistoryCourseApplyStatus.hashCode() : 0);
@@ -93,18 +106,8 @@ public class SysAdHistoryEntity {
         return result;
     }
 
-    @Basic
-    @Column(name = "ad_course_id", nullable = true, length = 36)
-    public String getAdCourseId() {
-        return adCourseId;
-    }
-
-    public void setAdCourseId(String adCourseId) {
-        this.adCourseId = adCourseId;
-    }
-
     @ManyToOne
-    @JoinColumn(name = "ad_course_id", referencedColumnName = "ad_course_id" ,insertable = false,updatable = false)
+    @JoinColumn(name = "ad_course_id", referencedColumnName = "ad_course_id", insertable = false, updatable = false )
     public SysAdmissionCourseEntity getSysAdmissionCourseByAdCourseId() {
         return sysAdmissionCourseByAdCourseId;
     }

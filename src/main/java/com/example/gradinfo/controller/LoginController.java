@@ -2,6 +2,7 @@ package com.example.gradinfo.controller;
 
 import com.example.gradinfo.dto.response.CodeDescriptionResponse;
 import com.example.gradinfo.dto.response.LoginResponse;
+import com.example.gradinfo.dto.response.SpPostNumberResponse;
 import com.example.gradinfo.service.LoginService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,5 +35,19 @@ public class LoginController {
     public ResponseEntity<List<CodeDescriptionResponse>> getCodeAndDescription() {
         List<CodeDescriptionResponse> responses = loginService.getCodeAndDescription();
         return new ResponseEntity<List<CodeDescriptionResponse>>(responses, HttpStatus.OK);
+    }
+
+    @ApiOperation("Get all SpPostNumber")
+    @GetMapping(path = "/getAllSpPostNumber")
+    public ResponseEntity<List<SpPostNumberResponse>> getAllSpPostNumber() {
+        List<SpPostNumberResponse> responses = loginService.getAllSpPostNumber();
+        return new ResponseEntity<List<SpPostNumberResponse>>(responses, HttpStatus.OK);
+    }
+
+    @ApiOperation("Get post number by userID")
+    @GetMapping(path = "/getPostNumberByUserID")
+    public ResponseEntity<List<SpPostNumberResponse>> getPostNumberByUserID(String userId) {
+        List<SpPostNumberResponse> responses = loginService.getPostNumberByUserID(userId);
+        return new ResponseEntity<List<SpPostNumberResponse>>(responses, HttpStatus.OK);
     }
 }

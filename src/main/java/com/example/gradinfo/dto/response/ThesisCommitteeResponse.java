@@ -6,5 +6,4 @@ import lombok.Data;
 public class ThesisCommitteeResponse {
     private String thesisCommitteeName;
     private String thesisCommitteeChar;
-    private String thesisCommitteeTitle;
 }

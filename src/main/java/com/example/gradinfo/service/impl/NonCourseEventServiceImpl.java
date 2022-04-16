@@ -2,14 +2,12 @@ package com.example.gradinfo.service.impl;
 
 import com.example.gradinfo.dto.request.ExamCommitteeRequest;
 import com.example.gradinfo.dto.request.NonCourseEventRequest;
+import com.example.gradinfo.dto.request.PaperTitleRequest;
 import com.example.gradinfo.dto.request.ThesisCommitteeRequest;
 import com.example.gradinfo.dto.response.*;
 import com.example.gradinfo.entity.*;
 import com.example.gradinfo.mapper.CommonMapper;
-import com.example.gradinfo.repository.EventRepository;
-import com.example.gradinfo.repository.ExamCommitteeRepository;
-import com.example.gradinfo.repository.NonCourseEventRepository;
-import com.example.gradinfo.repository.ThesisCommitteeRepository;
+import com.example.gradinfo.repository.*;
 import com.example.gradinfo.service.CommonService;
 import com.example.gradinfo.service.NonCourseEventService;
 import org.springframework.stereotype.Service;
@@ -20,19 +18,21 @@ import java.util.List;
 @Service
 public class NonCourseEventServiceImpl implements NonCourseEventService {
 
-    private CommonService commonService;
-    private NonCourseEventRepository nonCourseEventRepository;
-    private ExamCommitteeRepository examCommitteeRepository;
-    private ThesisCommitteeRepository thesisCommitteeRepository;
-    private EventRepository eventRepository;
+    private final CommonService commonService;
+    private final NonCourseEventRepository nonCourseEventRepository;
+    private final ExamCommitteeRepository examCommitteeRepository;
+    private final ThesisCommitteeRepository thesisCommitteeRepository;
+    private final EventRepository eventRepository;
+    private final StudentPostRepository studentPostRepository;
 
 
-    public NonCourseEventServiceImpl(CommonService commonService, NonCourseEventRepository nonCourseEventRepository, ExamCommitteeRepository examCommitteeRepository, ThesisCommitteeRepository thesisCommitteeRepository, EventRepository eventRepository) {
+    public NonCourseEventServiceImpl(CommonService commonService, NonCourseEventRepository nonCourseEventRepository, ExamCommitteeRepository examCommitteeRepository, ThesisCommitteeRepository thesisCommitteeRepository, EventRepository eventRepository, StudentPostRepository studentPostRepository) {
         this.commonService = commonService;
         this.nonCourseEventRepository = nonCourseEventRepository;
         this.examCommitteeRepository = examCommitteeRepository;
         this.thesisCommitteeRepository = thesisCommitteeRepository;
         this.eventRepository = eventRepository;
+        this.studentPostRepository = studentPostRepository;
     }
 
     @Override
@@ -111,6 +111,21 @@ public class NonCourseEventServiceImpl implements NonCourseEventService {
         try {
             sysThesisCommitteeEntity.setStudentPostId(commonService.getStudentPostEntitiesByStudentIdAndSpPostNumber(thesisCommitteeRequest.getStudentInfo().getStudentId(), thesisCommitteeRequest.getStudentInfo().getSpPostNumber()).getStudentPostId());
             thesisCommitteeRepository.save(sysThesisCommitteeEntity);
+        } catch (Exception e) {
+            commonResponse.setFlag(false);
+            return commonResponse;
+        }
+        commonResponse.setFlag(true);
+        return commonResponse;
+    }
+
+    @Override
+    public CommonResponse postPaperTitleByPaperTitleObj(PaperTitleRequest paperTitleRequest) {
+        SysStudentPostEntity sysStudentPostEntity = commonService.getStudentPostEntitiesByStudentIdAndSpPostNumber(paperTitleRequest.getStudentInfo().getStudentId(), paperTitleRequest.getStudentInfo().getSpPostNumber());
+        CommonResponse commonResponse = new CommonResponse();
+        try {
+            sysStudentPostEntity.setSpThesisTitle(paperTitleRequest.getPaperTitleObject().getSpThesisTitle());
+            studentPostRepository.saveAndFlush(sysStudentPostEntity);
         } catch (Exception e) {
             commonResponse.setFlag(false);
             return commonResponse;

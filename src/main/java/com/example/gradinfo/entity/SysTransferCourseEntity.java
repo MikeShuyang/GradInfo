@@ -231,7 +231,7 @@ public class SysTransferCourseEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "student_post_id", referencedColumnName = "student_post_id" ,insertable = false,updatable = false)
+    @JoinColumn(name = "student_post_id", referencedColumnName = "student_post_id", insertable = false, updatable = false)
     public SysStudentPostEntity getSysStudentPostByStudentPostId() {
         return sysStudentPostByStudentPostId;
     }
@@ -241,7 +241,7 @@ public class SysTransferCourseEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "institution_id", referencedColumnName = "institution_id" ,insertable = false,updatable = false)
+    @JoinColumn(name = "institution_id", referencedColumnName = "institution_id", insertable = false, updatable = false)
     public SysInstitutionEntity getSysInstitutionByInstitutionId() {
         return sysInstitutionByInstitutionId;
     }

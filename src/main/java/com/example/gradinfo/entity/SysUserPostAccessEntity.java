@@ -63,7 +63,7 @@ public class SysUserPostAccessEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id",insertable = false,updatable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", insertable = false, updatable = false)
     public SysUserEntity getSysUserByUserId() {
         return sysUserByUserId;
     }

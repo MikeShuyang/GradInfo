@@ -27,11 +27,19 @@ public class DegreeCheckServiceImpl implements DegreeCheckService {
     @Override
     public CommonResponse postDegreeCheckByDegreeCheckObj(DegreeCheckRequest degreeCheckRequest) {
         CommonResponse commonResponse = new CommonResponse();
-
-        SysDegreeCheckEntity sysDegreeCheckEntity = CommonMapper.convertToDto(degreeCheckRequest.getDegreeCheckObject(), SysDegreeCheckEntity.class);
-        sysDegreeCheckEntity.setStudentPostId(commonService.getStudentPostEntitiesByStudentIdAndSpPostNumber(degreeCheckRequest.getStudentInfo().getStudentId(), degreeCheckRequest.getStudentInfo().getSpPostNumber()).getStudentPostId());
         try {
-            degreeCheckRepository.save(sysDegreeCheckEntity);
+        SysDegreeCheckEntity sysDegreeCheckEntity = degreeCheckRepository.getSysDegreeCheckEntityByDegreeCheckId(Integer.valueOf(degreeCheckRequest.getDegreeCheckObject().getDegreeCheckId()));
+
+        sysDegreeCheckEntity.setDegreeName(degreeCheckRequest.getDegreeCheckObject().getDegreeName());
+        sysDegreeCheckEntity.setDegreeCatalogYear(degreeCheckRequest.getDegreeCheckObject().getDegreeCatalogYear());
+        sysDegreeCheckEntity.setDegreeAdmissionTerm(degreeCheckRequest.getDegreeCheckObject().getDegreeAdmissionTerm());
+        sysDegreeCheckEntity.setDegreeGraduationTerm(degreeCheckRequest.getDegreeCheckObject().getDegreeGraduationTerm());
+        sysDegreeCheckEntity.setDegreeForeignLanguage(degreeCheckRequest.getDegreeCheckObject().getDegreeForeignLanguage());
+        sysDegreeCheckEntity.setStudentPostId(commonService.getStudentPostEntitiesByStudentIdAndSpPostNumber(degreeCheckRequest.getStudentInfo().getStudentId(), degreeCheckRequest.getStudentInfo().getSpPostNumber()).getStudentPostId());
+//        sysDegreeCheckEntity.setDegreeCheckId(sysDegreeCheckEntity.getDegreeCheckId());
+        sysDegreeCheckEntity.setDegreeCheckCompleted(Byte.valueOf("1"));
+
+        degreeCheckRepository.save(sysDegreeCheckEntity);
         } catch (Exception e) {
             commonResponse.setFlag(false);
             return commonResponse;

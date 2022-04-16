@@ -103,7 +103,7 @@ public class SysStudentBachelorEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "student_id", referencedColumnName = "student_id" ,insertable = false,updatable = false)
+    @JoinColumn(name = "student_id", referencedColumnName = "student_id", insertable = false, updatable = false)
     public SysStudentEntity getSysStudentByStudentId() {
         return sysStudentByStudentId;
     }

@@ -11,6 +11,8 @@ import java.util.List;
 public interface StudentPostRepository extends JpaRepository<SysStudentPostEntity,String> {
 //    List<SysStudentPostEntity> getSysStudentPostEntitiesBySysStudentByStudentId(SysStudentEntity sysStudentEntity);
     List<SysStudentPostEntity> getSysStudentPostEntitiesByStudentId(String student_id);
+    List<SysStudentPostEntity> findAllBySpPostNumberIsNotNull();
+
 }
 
 

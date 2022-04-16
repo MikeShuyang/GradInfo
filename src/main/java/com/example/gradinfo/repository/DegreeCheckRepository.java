@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface DegreeCheckRepository extends JpaRepository<SysDegreeCheckEntity, String> {
     List<SysDegreeCheckEntity> getSysDegreeCheckEntitiesByStudentPostId(String studentPostId);
+    SysDegreeCheckEntity getSysDegreeCheckEntityByDegreeCheckId(Integer degreeCheckId);
 }

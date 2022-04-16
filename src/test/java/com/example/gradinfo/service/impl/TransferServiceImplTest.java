@@ -1,11 +1,21 @@
-package com.example.gradinfo.service.impl;
+package com.example.gradinfo.impl;
 
-import com.example.gradinfo.dto.request.*;
-import com.example.gradinfo.dto.response.*;
+import com.example.gradinfo.dto.request.Course;
+import com.example.gradinfo.dto.request.StudentInfo;
+import com.example.gradinfo.dto.request.TransferCourseRequest;
+import com.example.gradinfo.dto.request.UserInfo;
+import com.example.gradinfo.dto.response.BachelorDegreeResponse;
+import com.example.gradinfo.dto.response.TransferCourseApplyResponse;
+import com.example.gradinfo.dto.response.TransferCourseResponse;
+import com.example.gradinfo.dto.response.TransferInstitution;
 import com.example.gradinfo.entity.*;
 import com.example.gradinfo.repository.*;
 import com.example.gradinfo.service.CommonService;
-import org.junit.jupiter.api.*;
+import com.example.gradinfo.service.impl.TransferServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -15,7 +25,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -246,9 +257,13 @@ class TransferServiceImplTest {
                         any(),any()))
                         .thenReturn(new ArrayList<>());
 
-                when(transferCourseRepository.save(
-                        any(SysTransferCourseEntity.class)))
-                        .thenReturn(new SysTransferCourseEntity());
+                when(transferHistoryRepository.saveAllAndFlush(
+                        any()))
+                        .thenReturn(new ArrayList<>());
+
+                when(transferCourseRepository.saveAllAndFlush(
+                        any()))
+                        .thenReturn(new ArrayList<>());
 
                 when(commonService.calculateGpaAndUnit(
                         any(),any(),any(),any()))

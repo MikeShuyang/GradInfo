@@ -15,5 +15,5 @@ public class StudentPostResponse {
     private double spRgunits;
     private double spGpaApply;
     private double spGpaAll;
-
+    private String spThesisTitle;
 }

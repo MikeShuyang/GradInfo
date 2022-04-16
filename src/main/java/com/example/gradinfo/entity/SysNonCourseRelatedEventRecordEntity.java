@@ -118,7 +118,7 @@ public class SysNonCourseRelatedEventRecordEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "event_id", referencedColumnName = "event_id" ,insertable = false,updatable = false)
+    @JoinColumn(name = "event_id", referencedColumnName = "event_id", insertable = false, updatable = false)
     public SysEventEntity getSysEventByEventId() {
         return sysEventByEventId;
     }
@@ -128,7 +128,7 @@ public class SysNonCourseRelatedEventRecordEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "student_post_id", referencedColumnName = "student_post_id",insertable = false,updatable = false)
+    @JoinColumn(name = "student_post_id", referencedColumnName = "student_post_id", insertable = false, updatable = false)
     public SysStudentPostEntity getSysStudentPostByStudentPostId() {
         return sysStudentPostByStudentPostId;
     }
